@@ -10,8 +10,8 @@ class Board {
       "Rook",
       "Horse",
       "Bishop",
-      "Queen",
       "King",
+      "Queen",
       "Bishop",
       "Horse",
       "Rook",
@@ -30,7 +30,6 @@ class Board {
     this.offset_x = 12;
     this.offset_y = 12;
     this.side_size = 75;
-    this.label = [];
     for (let i = 0; i < this.rows; i++) {
       let for_push = [];
       for (let j = 0; j < this.cols; j++) for_push.push(null);
@@ -61,25 +60,13 @@ class Board {
     return this.pieces;
   }
 
-  //  print_board(){
-  //     //Prints on console full board//
-  //     for (let i = 0; i < this.rows; i++){
-  //         for_append = ''
-  //         for col in range(this.cols):
-  //             if this.board[row][col] is None:
-  //                 for_append += f' {this.board[row][col]}'
-  //             else:
-  //                 for_append += f' {this.board[row][col].get_name()}'
-  //         print(f'{ROW_NAMES[row]}{for_append}')
-  //     }
-  //     print('   A    B    C    D    E    F    G    H  ')
-  //  }
 
-  //  mov(piece, pos):
-  //     old_pos = piece.get_position()
-  //     this.board[old_pos[0]][old_pos[1]] = None
-  //     this.board[pos[0]][pos[1]] = piece
-  //     piece.set_position(pos)
+   mov(piece, pos){
+      let old_pos = piece.get_pos();
+      this.board[old_pos[0]][old_pos[1]] = null;
+      this.board[pos[0]][pos[1]] = piece;
+      piece.set_position(pos);
+   }
 
   get_board() {
     return this.board;

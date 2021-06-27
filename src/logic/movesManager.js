@@ -1,20 +1,25 @@
-//export default GameManager;
-
-//diccionario de funciones de movimiento
-// const  {
-//   //functions for pieces
-//   Horse: horseMoves,
-//   King: kingMoves,
-//   Bishop: bishopMoves,
-//   Rook: rookMoves,
-//   Queen: queenMoves,
-//   Pawn: pawnMoves
-// };
-
 class MovesManager {
   constructor(board) {
     this.board = board;
   }
+
+  moves = (piece) => {
+    switch (piece.get_name()) {
+      case "Horse":
+        return this.horseMoves(piece);
+      case "Rook":
+        return this.rookMoves(piece);
+      case "Bishop":
+        return this.bishopMoves(piece);
+      case "Queen":
+        return this.queenMoves(piece);
+      case "King":
+        return this.kingMoves(piece);
+      case "Pawn":
+        return this.pawnMoves(piece);
+    }
+    throw new Error("wrong piece name");
+  };
 
   horseMoves(piece) {
     let moves = [
@@ -156,12 +161,12 @@ class MovesManager {
       piece.pos[0] + 1 * a,
       piece.pos[1] + -1,
     ]);
-    if (obj && obj != "out" && obj.color != piece.color) {
+    if (obj && obj !== "out" && obj.color !== piece.color) {
       moves = [[[1 * a, 1]]];
       frPush();
     }
     obj = this.board.get_objInPos([piece.pos[0] + 1 * a, piece.pos[1] + -1]);
-    if (obj && obj != "out" && obj.color != piece.color) {
+    if (obj && obj !== "out" && obj.color !== piece.color) {
       moves = [[[1 * a, -1]]];
       frPush();
     }
@@ -171,6 +176,7 @@ class MovesManager {
   ajustMoves(piece, moves) {
     // remove moves out of board and block from other pieces and concat moves in the return array
     let forReturn = [];
+    let threats = [];
     for (let i = 0; i < moves["progresiones"]; i++) {
       for (let j = 0; j < moves["data"][i].length; j++) {
         let pos = moves["data"][i][j];
@@ -181,19 +187,21 @@ class MovesManager {
           } else if (square.color === piece.get_color()) {
             moves["data"][i].splice(j);
           } else {
-            moves["data"][i].splice(j + 1);
+            square.set_if_threat(true);
+            threats.push(square.get_pos());
+            moves["data"][i].splice(j);
           }
         }
       }
       //add moves in forReturn
-      if (moves["data"][i] != [])
+      if (moves["data"][i] !== [])
         forReturn = [].concat(forReturn, moves["data"][i]);
     }
     // quit check bad moves
     for (let i = 0; i < forReturn.length; i++) {
       if (this.isCheck(piece, moves[i])) moves.slice(i, i + 1);
     }
-    return forReturn;
+    return { moves: forReturn, threats: threats };
   }
 
   isCheck(piece = null, mov = null) {
@@ -214,3 +222,5 @@ class MovesManager {
     return forReturn;
   }
 }
+
+export default MovesManager;

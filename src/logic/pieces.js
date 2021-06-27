@@ -10,6 +10,7 @@ class Piece {
     this.color = color;
     this.pos = pos;
     this.if_select = false;
+    this.if_threat = false;
     this.label = "";
     this.never_move = true;
   }
@@ -17,12 +18,12 @@ class Piece {
   //SETTERS
 
   set_position(position) {
-    this.position = position;
+    this.pos = position;
     this.never_move = false;
   }
 
-  set_select(select) {
-    this.if_select = select;
+  change_select() {
+    this.if_select = !this.if_select;
   }
 
   set_label(label) {
@@ -36,6 +37,11 @@ class Piece {
   set_if_select(select) {
     this.if_select = select;
   }
+
+  set_if_threat(value) {
+    this.if_threat = value;
+  }
+
 
   set_never_move(never_move) {
     this.never_move = never_move;

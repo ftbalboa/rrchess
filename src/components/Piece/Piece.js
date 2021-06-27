@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { selectPiece } from "../../redux/actions/gameActions";
-import  "./Piece.css";
+import "./Piece.css";
 
 //Images
 import BpImg from "../../img/blackPawn.png";
@@ -16,6 +16,8 @@ import WhImg from "../../img/whiteHorse.png";
 import WbImg from "../../img/whiteBishop.png";
 import WqImg from "../../img/whiteQueen.png";
 import WkImg from "../../img/whiteKing.png";
+import SelImg from "../../img/select.png";
+import ThrImg from "../../img/threat.png";
 
 const imgDicc = {
   Pawnblack: BpImg,
@@ -30,6 +32,8 @@ const imgDicc = {
   Bishopwhite: WbImg,
   Queenwhite: WqImg,
   Kingwhite: WkImg,
+  Select: SelImg,
+  Threat: ThrImg,
 };
 
 export function PieceReact({ piece, click }) {
@@ -42,18 +46,37 @@ export function PieceReact({ piece, click }) {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    "pointerEvents": "all",
+    pointerEvents: "all",
   };
-
   const img = imgDicc[`${piece.name}${piece.color}`];
-
   const handleClick = () => {
-    click();
-  }
+    click(piece);
+  };
 
   return (
     <div style={style}>
-      <img alt="piece" className="piece" src={img} onClick={()=>handleClick()}></img>
+      <div className="pieceContainer">
+        <img
+          alt="piece"
+          className="piece"
+          src={img}
+          onClick={() => handleClick()}
+        ></img>
+        {piece.if_select ? (
+          <img
+            src={imgDicc.Select}
+            className="select"
+            onClick={() => handleClick()}
+          ></img>
+        ) : null}
+        {piece.if_threat ? (
+          <img
+            src={imgDicc.Threat}
+            className="select"
+            onClick={() => handleClick()}
+          ></img>
+        ) : null}
+      </div>
     </div>
   );
 }
