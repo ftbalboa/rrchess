@@ -1,9 +1,12 @@
 class MovesManager {
   constructor(board) {
     this.board = board;
+    this.alPasoChance = [];
+    this.evadeCastle = false; // to eliminate recursion
   }
 
   moves = (piece) => {
+    this.alPasoChance = [];
     switch (piece.get_name()) {
       case "Horse":
         return this.horseMoves(piece);
@@ -48,7 +51,14 @@ class MovesManager {
       [[-1, 1]],
     ];
     moves = this.madeProg(piece.get_pos(), moves);
-    return this.ajustMoves(piece, moves);
+    moves = this.ajustMoves(piece, moves);
+    if (!this.evadeCastle) {
+      if (this.can_castle(piece, true))
+        moves.moves.push([piece.get_pos()[0], 1]);
+      if (this.can_castle(piece, false))
+        moves.moves.push([piece.get_pos()[0], 5]);
+    }
+    return moves;
   }
 
   rookMoves(piece) {
@@ -147,33 +157,30 @@ class MovesManager {
     let forReturn = [];
     let a = piece.get_color() === "white" ? 1 : -1;
     let moves = [[[1 * a, 0]]];
-    let frPush = () => {
+    let frPush = (if_treaths, if_moves) => {
       moves = this.madeProg(piece.get_pos(), moves);
-      forReturn = [].concat(forReturn, this.ajustMoves(piece, moves));
+      forReturn = [].concat(
+        forReturn,
+        this.ajustMoves(piece, moves, if_treaths)
+      );
+      if (!if_moves) forReturn[forReturn.length - 1].moves = [];
     };
-    frPush();
+    frPush(false, true);
     if (piece.get_never_move()) {
       moves = [[[2 * a, 0]]];
-      frPush();
+      frPush(false, true);
     }
-
-    let obj = this.board.get_objInPos([
-      piece.pos[0] + 1 * a,
-      piece.pos[1] + -1,
-    ]);
-    if (obj && obj !== "out" && obj.color !== piece.color) {
-      moves = [[[1 * a, 1]]];
-      frPush();
-    }
-    obj = this.board.get_objInPos([piece.pos[0] + 1 * a, piece.pos[1] + -1]);
-    if (obj && obj !== "out" && obj.color !== piece.color) {
-      moves = [[[1 * a, -1]]];
-      frPush();
+    moves = [[[1 * a, 1]]];
+    frPush(true, false);
+    moves = [[[1 * a, -1]]];
+    frPush(true, false);
+    if (this.alPasoChance !== []) {
+      forReturn = [...forReturn, { moves: [this.alPasoChance], threats: [] }];
     }
     return forReturn;
   }
 
-  ajustMoves(piece, moves) {
+  ajustMoves(piece, moves, if_threats = true) {
     // remove moves out of board and block from other pieces and concat moves in the return array
     let forReturn = [];
     let threats = [];
@@ -187,9 +194,21 @@ class MovesManager {
           } else if (square.color === piece.get_color()) {
             moves["data"][i].splice(j);
           } else {
-            square.set_if_threat(true);
-            threats.push(square.get_pos());
+            if (if_threats) {
+              if (!this.evadeCastle) square.set_if_threat(true);
+              threats.push(square.get_pos());
+            }
             moves["data"][i].splice(j);
+          }
+        } else {
+          //handle al paso
+          if (this.board.alpasoMark && piece.name === "Pawn") {
+            if (
+              this.board.alpasoPos[0] === moves["data"][i][j][0] &&
+              this.board.alpasoPos[1] === moves["data"][i][j][1]
+            ) {
+              this.alPasoChance = moves["data"][i][j];
+            }
           }
         }
       }
@@ -220,6 +239,95 @@ class MovesManager {
       forReturn["data"].push(mov);
     }
     return forReturn;
+  }
+
+  can_castle(king, short = false) {
+    let forReturn = true;
+    let pos = king.get_pos();
+    let rook = short
+      ? this.board.get_objInPos([pos[0], 0])
+      : this.board.get_objInPos([pos[0], 7]);
+    if (rook && rook.never_move && king.never_move) {
+      //hay piezas en el medio?
+      if (rook.pos[1] === 0) {
+        if (
+          this.board.get_objInPos([pos[0], 1]) ||
+          this.board.get_objInPos([pos[0], 2])
+        ) {
+          forReturn = false;
+        } else {
+          if (
+            this.threats_in_squares(
+              [
+                [pos[0], 1],
+                [pos[0], 2],
+              ],
+              king.color
+            )
+          )
+            forReturn = false;
+        }
+      } else {
+        if (
+          this.board.get_objInPos([pos[0], 4]) ||
+          this.board.get_objInPos([pos[0], 5]) ||
+          this.board.get_objInPos([pos[0], 6])
+        ) {
+          forReturn = false;
+        } else {
+          if (
+            this.threats_in_squares(
+              [
+                [pos[0], 4],
+                [pos[0], 5],
+                [pos[0], 6],
+              ],
+              king.color
+            )
+          )
+            forReturn = false;
+        }
+      }
+      //hay amenazas?
+    } else {
+      //add memory for optimization
+      forReturn = false;
+    }
+    return forReturn;
+  }
+
+  threats_in_squares(pos, color = this.colors[0]) {
+    let forReturn = false;
+    this.evadeCastle = true;
+    for (let p of this.board.pieces) {
+      if (p.color !== color) {
+        let movs = this.giveMeMoves(p);
+        movs.moves.forEach((m) => {
+          for (let a of pos) {
+            if (m[0] === a[0] && m[1] === a[1]) forReturn = true;
+          }
+        });
+      }
+    }
+    this.evadeCastle = false;
+    return forReturn;
+  }
+
+  giveMeMoves(piece) {
+    let forHandle = this.moves(piece);
+    if (forHandle instanceof Array) {
+      let aux = {
+        moves: [],
+        threats: [],
+      };
+      forHandle.forEach((f) => {
+        for (let i = 0; i < f.moves.length; i++) aux.moves.push(f.moves[i]);
+        for (let j = 0; j < f.threats.length; j++)
+          aux.threats.push(f.threats[j]);
+      });
+      forHandle = aux;
+    }
+    return forHandle;
   }
 }
 

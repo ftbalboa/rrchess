@@ -27,10 +27,18 @@ export function BoardReact() {
     changePieces([...manager.get_pieces()]);
   };
 
-  const OnClickPosMov = (pos) => {
+  const onClickPosMov = (pos) => {
+    changePosThreats(manager.clean_threats(posThreats));
     manager.mov_piece(pos);
     changePieces([...manager.get_pieces()]);
     changePosMoves([]);
+  };
+
+  const onClickThreat = (piece) => {
+    manager.eat(piece);
+    changePieces([...manager.get_pieces()]);
+    changePosMoves([]);
+    changePosThreats(manager.clean_threats(posThreats));
   };
 
   return (
@@ -39,8 +47,11 @@ export function BoardReact() {
         <PieceReact
           key={piece.id}
           piece={piece}
-          click={(piece) => {
+          clickSel={(piece) => {
             onClickPiece(piece);
+          }}
+          clickThr={(piece) => {
+            onClickThreat(piece);
           }}
         />
       ))}
@@ -49,7 +60,7 @@ export function BoardReact() {
           key={index}
           pos={mov}
           click={(pos) => {
-            OnClickPosMov(pos);
+            onClickPosMov(pos);
           }}
         />
       ))}

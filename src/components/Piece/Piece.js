@@ -36,7 +36,7 @@ const imgDicc = {
   Threat: ThrImg,
 };
 
-export function PieceReact({ piece, click }) {
+export function PieceReact({ piece, clickSel, clickThr }) {
   const style = {
     backgroundColor: "transparent",
     gridColumn: `${piece.pos[1] + 1}`,
@@ -49,8 +49,11 @@ export function PieceReact({ piece, click }) {
     pointerEvents: "all",
   };
   const img = imgDicc[`${piece.name}${piece.color}`];
-  const handleClick = () => {
-    click(piece);
+  const handleClickSel = () => {
+    clickSel(piece);
+  };
+  const handleClickThr = () => {
+    clickThr(piece);
   };
 
   return (
@@ -60,20 +63,20 @@ export function PieceReact({ piece, click }) {
           alt="piece"
           className="piece"
           src={img}
-          onClick={() => handleClick()}
+          onClick={() => handleClickSel()}
         ></img>
         {piece.if_select ? (
           <img
             src={imgDicc.Select}
             className="select"
-            onClick={() => handleClick()}
+            onClick={() => handleClickSel()}
           ></img>
         ) : null}
         {piece.if_threat ? (
           <img
             src={imgDicc.Threat}
             className="select"
-            onClick={() => handleClick()}
+            onClick={() => handleClickThr()}
           ></img>
         ) : null}
       </div>
