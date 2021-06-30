@@ -37,6 +37,11 @@ class Board {
     }
     this.alpasoMark = null;
     this.alpasoPos = [];
+    this.forSimulate = {
+      piece: null,
+      deletePiece: null,
+      old_pos: null,
+    };
     this.__init_position();
   }
 
@@ -62,16 +67,46 @@ class Board {
     return this.pieces;
   }
 
-  mov(piece, pos) {
+  mov(piece, pos, silence = false) {
     let old_pos = piece.get_pos();
     this.board[old_pos[0]][old_pos[1]] = null;
     this.board[pos[0]][pos[1]] = piece;
-    piece.set_position(pos);
+    piece.set_position(pos, silence);
   }
 
   delete_piece(piece) {
     let index = this.pieces.findIndex((p) => p.id === piece.id);
-    this.pieces.splice(index,1);
+    this.pieces.splice(index, 1);
+  }
+
+  init_simulate(piece, pos) {
+    if (this.board[pos[0]][pos[1]] === null) {
+      this.forSimulate.piece = piece;
+      this.forSimulate.old_pos = piece.pos;
+      this.mov(piece, pos, true);
+    } else {
+      this.forSimulate.piece = piece;
+      this.forSimulate.old_pos = piece.pos;
+      this.forSimulate.deletePiece = this.board[pos[0]][pos[1]];
+      this.delete_piece(this.forSimulate.deletePiece);
+      this.mov(piece, pos, true);
+    }
+  }
+
+  end_simulate() {
+    let deletePos = this.forSimulate.piece.pos;
+    this.mov(this.forSimulate.piece, this.forSimulate.old_pos, true);
+    if (this.forSimulate.deletePiece) {
+      this.pieces.push(this.forSimulate.deletePiece);
+    }
+    this.board[deletePos[0]][deletePos[1]] = this.forSimulate.deletePiece
+      ? this.forSimulate.deletePiece
+      : null;
+    this.forSimulate = {
+      piece: null,
+      deletePiece: null,
+      old_pos: null,
+    };
   }
 
   get_board() {
@@ -92,17 +127,16 @@ class Board {
     return this.board[pos[0]][pos[1]];
   }
 
-  alpasoHandle(piece,pos){
-        if (piece.get_name() === 'Pawn' && Math.abs(pos[0] - piece.pos[0]) > 1){
-          let a = piece.get_color() === "white" ? 1 : -1;
-          this.alpasoMark = piece;
-          this.alpasoPos = [piece.get_pos()[0] + a , piece.get_pos()[1]];
-        } else {
-          this.alpasoMark = null;
-          this.alpasoPos = [];
-        }
+  alpasoHandle(piece, pos) {
+    if (piece.get_name() === "Pawn" && Math.abs(pos[0] - piece.pos[0]) > 1) {
+      let a = piece.get_color() === "white" ? 1 : -1;
+      this.alpasoMark = piece;
+      this.alpasoPos = [piece.get_pos()[0] + a, piece.get_pos()[1]];
+    } else {
+      this.alpasoMark = null;
+      this.alpasoPos = [];
+    }
   }
-
 
   //  get_square_color(this, pos):
   //     row = pos[0]

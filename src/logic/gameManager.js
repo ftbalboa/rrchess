@@ -1,6 +1,10 @@
 import Board from "./board.js";
 import MovesManager from "./movesManager.js";
 
+const PLAY = "play"
+const CHECKMATE = "checkmate"
+const TABLES = "tables"
+
 class GameManager {
   constructor() {
     this.board = new Board();
@@ -9,12 +13,9 @@ class GameManager {
     this.movs = [];
     this.piece_selected = null;
     this.moves_manager = new MovesManager(this.board);
+    this.promoves = "Queen";
+    this.status = PLAY;
   }
-
-  is_check() {
-    //pass
-  }
-
 
   possMovs(piece) {
     return this.moves_manager.giveMeMoves(piece);
@@ -67,11 +68,17 @@ class GameManager {
     this.board.alpasoHandle(this.piece_selected, pos);
     //standar
     this.board.mov(this.piece_selected, pos);
+    //handle promoves
+    this.promoves_pawn(this.piece_selected);
+    //continue
     this.piece_selected.change_select();
     this.piece_selected = null;
+    //Change turn
     this.board.get_colors()[0] === this.turn
       ? (this.turn = this.board.get_colors()[1])
       : (this.turn = this.board.get_colors()[0]);
+    //checkMate handle
+    this.status = this.moves_manager.ifCheckMate(this.turn);
   }
 
   clean_threats(threats) {
@@ -85,11 +92,25 @@ class GameManager {
     let new_pos = eated_piece.get_pos();
     this.board.delete_piece(eated_piece);
     this.board.mov(this.piece_selected, new_pos);
+    //handle promove
+    this.promoves_pawn(this.piece_selected);
     this.piece_selected.change_select();
     this.piece_selected = null;
     this.board.get_colors()[0] === this.turn
       ? (this.turn = this.board.get_colors()[1])
       : (this.turn = this.board.get_colors()[0]);
+    //checkMate handle
+    this.status = this.moves_manager.ifCheckMate(this.turn);
+  }
+
+  promoves_pawn(piece) {
+    if (
+      piece.name === "Pawn" &&
+      ((piece.color === "black" && piece.pos[0] === 0) ||
+        (piece.color === "white" && piece.pos[0] === 7))
+    ) {
+      piece.name = this.promoves;
+    }
   }
 
   // deselect_all(){

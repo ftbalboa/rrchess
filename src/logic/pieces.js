@@ -17,21 +17,13 @@ class Piece {
 
   //SETTERS
 
-  set_position(position) {
+  set_position(position, silence = false) {
     this.pos = position;
-    this.never_move = false;
+    if (!silence) this.never_move = false;
   }
 
   change_select() {
     this.if_select = !this.if_select;
-  }
-
-  set_label(label) {
-    this.label = label;
-  }
-
-  set_label(label) {
-    this.label = label;
   }
 
   set_if_select(select) {

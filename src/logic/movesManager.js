@@ -1,3 +1,7 @@
+const PLAY = "play"
+const CHECKMATE = "checkmate"
+const TABLES = "tables"
+
 class MovesManager {
   constructor(board) {
     this.board = board;
@@ -20,8 +24,9 @@ class MovesManager {
         return this.kingMoves(piece);
       case "Pawn":
         return this.pawnMoves(piece);
+      default:
+        throw new Error("wrong piece name");
     }
-    throw new Error("wrong piece name");
   };
 
   horseMoves(piece) {
@@ -175,7 +180,7 @@ class MovesManager {
     moves = [[[1 * a, -1]]];
     frPush(true, false);
     if (this.alPasoChance !== []) {
-      forReturn = [...forReturn, { moves: [this.alPasoChance], threats: [] }];
+      forReturn = [...forReturn, { moves: this.alPasoChance, threats: [] }];
     }
     return forReturn;
   }
@@ -195,7 +200,6 @@ class MovesManager {
             moves["data"][i].splice(j);
           } else {
             if (if_threats) {
-              if (!this.evadeCastle) square.set_if_threat(true);
               threats.push(square.get_pos());
             }
             moves["data"][i].splice(j);
@@ -218,14 +222,51 @@ class MovesManager {
     }
     // quit check bad moves
     for (let i = 0; i < forReturn.length; i++) {
-      if (this.isCheck(piece, moves[i])) moves.slice(i, i + 1);
+      if (!this.evadeCastle && this.isCheck(piece, forReturn[i])) {
+        forReturn.splice(i, 1);
+        i--;
+      }
+    }
+    for (let i = 0; i < threats.length; i++) {
+      if (!this.evadeCastle && this.isCheck(piece, threats[i])) {
+        threats.splice(i, 1);
+        i--;
+      }
+    }
+    if (!this.evadeCastle) {
+      threats.forEach((t) => {
+        this.board.get_objInPos(t).set_if_threat(true);
+      });
     }
     return { moves: forReturn, threats: threats };
   }
 
-  isCheck(piece = null, mov = null) {
-    //TODO
-    return false;
+  isCheck(piece, mov) {
+    this.evadeCastle = true;
+    this.board.init_simulate(piece, mov);
+    let forReturn = this.isCheckNow(piece.color);
+    this.board.end_simulate();
+    this.evadeCastle = false;
+    return forReturn;
+  }
+
+  isCheckNow(color) {
+    let forReturn = false;
+    let king = null;
+    for (let piece of this.board.pieces) {
+      if (piece.name === "King" && piece.color === color) king = piece;
+    }
+    this.evadeCastle = true;
+    for (let p of this.board.pieces) {
+      if (p.color !== color) {
+        let movs = this.giveMeMoves(p);
+        for (let m of movs.threats) {
+          if (m[0] === king.pos[0] && m[1] === king.pos[1]) forReturn = true;
+        }
+      }
+    }
+    this.evadeCastle = false;
+    return forReturn;
   }
 
   madeProg(pos, moves) {
@@ -293,6 +334,7 @@ class MovesManager {
       //add memory for optimization
       forReturn = false;
     }
+    if (forReturn) forReturn = !this.isCheckNow(king.color);
     return forReturn;
   }
 
@@ -328,6 +370,19 @@ class MovesManager {
       forHandle = aux;
     }
     return forHandle;
+  }
+
+  ifCheckMate(color) {
+    for (let p of this.board.pieces) {
+      if (p.color === color) {
+        let movs = this.giveMeMoves(p);
+        if (movs.moves.length > 0 || movs.threats.length > 0) {
+          return PLAY;
+        }
+      }
+    }
+    if (this.isCheckNow(color)) return CHECKMATE;
+    else return TABLES;
   }
 }
 
