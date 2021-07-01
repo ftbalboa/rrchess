@@ -1,9 +1,9 @@
 import Board from "./board.js";
 import MovesManager from "./movesManager.js";
 
-const PLAY = "play"
-const CHECKMATE = "checkmate"
-const TABLES = "tables"
+const PLAY = "play";
+const CHECKMATE = "checkmate";
+const TABLES = "tables";
 
 class GameManager {
   constructor() {
@@ -18,7 +18,9 @@ class GameManager {
   }
 
   possMovs(piece) {
-    return this.moves_manager.giveMeMoves(piece);
+    let movs = this.moves_manager.giveMeMoves(piece);
+    this.set_threats(movs.threats);
+    return movs;
   }
 
   select_piece(piece) {
@@ -81,6 +83,12 @@ class GameManager {
     this.status = this.moves_manager.ifCheckMate(this.turn);
   }
 
+  set_threats(threats){
+    threats.forEach((t) => {
+      this.board.get_objInPos(t).set_if_threat(true);
+    });
+  }
+
   clean_threats(threats) {
     for (let threat of threats) {
       this.board.get_objInPos(threat).set_if_threat(false);
@@ -112,15 +120,6 @@ class GameManager {
       piece.name = this.promoves;
     }
   }
-
-  // deselect_all(){
-  //         this.gui.hide_label(this.select_item.get_label())
-  //         for piece in this.board.get_pieces():
-  //             piece.set_if_select(False)
-  //         for mov in this.movs:
-  //             this.gui.hide_label(mov.get_label())
-  //         this.movs = []
-  //         this.piece_selected = ""}
 }
 
 export default GameManager;

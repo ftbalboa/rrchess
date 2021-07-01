@@ -1,11 +1,13 @@
 import React from 'react';
 import './App.css';
-import {BoardReact} from './components/Board/Board'
+import {Admin} from './components/Admin/Admin'
+import {Nav} from './components/Nav/Nav'
 
 function App() {
   return (
     <div className="App">
-      <BoardReact />
+      <Nav />
+      <Admin />
     </div>
   );
 }

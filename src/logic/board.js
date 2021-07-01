@@ -137,20 +137,6 @@ class Board {
       this.alpasoPos = [];
     }
   }
-
-  //  get_square_color(this, pos):
-  //     row = pos[0]
-  //     col = pos[1]
-  //     if row % 2 == 0:
-  //         pos = col + 1
-  //     else:
-  //         pos = col
-  //     if pos % 2 == 0:
-  //         return W_SQUARES_COLOR
-  //     else:
-  //         return B_SQUARES_COLOR
-
-  //  get_n_rows(){return this.rows;}
 }
 
 export default Board;

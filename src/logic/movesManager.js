@@ -1,6 +1,6 @@
-const PLAY = "play"
-const CHECKMATE = "checkmate"
-const TABLES = "tables"
+const PLAY = "play";
+const CHECKMATE = "checkmate";
+const TABLES = "tables";
 
 class MovesManager {
   constructor(board) {
@@ -10,7 +10,6 @@ class MovesManager {
   }
 
   moves = (piece) => {
-    this.alPasoChance = [];
     switch (piece.get_name()) {
       case "Horse":
         return this.horseMoves(piece);
@@ -179,8 +178,8 @@ class MovesManager {
     frPush(true, false);
     moves = [[[1 * a, -1]]];
     frPush(true, false);
-    if (this.alPasoChance !== []) {
-      forReturn = [...forReturn, { moves: this.alPasoChance, threats: [] }];
+    if (this.alPasoChance.length > 0) {
+      forReturn = [...forReturn, { moves: [this.alPasoChance], threats: [] }];
     }
     return forReturn;
   }
@@ -206,7 +205,11 @@ class MovesManager {
           }
         } else {
           //handle al paso
-          if (this.board.alpasoMark && piece.name === "Pawn") {
+          if (
+            this.board.alpasoMark &&
+            piece.name === "Pawn" &&
+            piece.color !== this.board.alpasoMark.color
+          ) {
             if (
               this.board.alpasoPos[0] === moves["data"][i][j][0] &&
               this.board.alpasoPos[1] === moves["data"][i][j][1]
@@ -233,11 +236,6 @@ class MovesManager {
         i--;
       }
     }
-    if (!this.evadeCastle) {
-      threats.forEach((t) => {
-        this.board.get_objInPos(t).set_if_threat(true);
-      });
-    }
     return { moves: forReturn, threats: threats };
   }
 
@@ -259,7 +257,7 @@ class MovesManager {
     this.evadeCastle = true;
     for (let p of this.board.pieces) {
       if (p.color !== color) {
-        let movs = this.giveMeMoves(p);
+        let movs = this._giveMeMoves(p);
         for (let m of movs.threats) {
           if (m[0] === king.pos[0] && m[1] === king.pos[1]) forReturn = true;
         }
@@ -343,7 +341,7 @@ class MovesManager {
     this.evadeCastle = true;
     for (let p of this.board.pieces) {
       if (p.color !== color) {
-        let movs = this.giveMeMoves(p);
+        let movs = this._giveMeMoves(p);
         movs.moves.forEach((m) => {
           for (let a of pos) {
             if (m[0] === a[0] && m[1] === a[1]) forReturn = true;
@@ -355,7 +353,7 @@ class MovesManager {
     return forReturn;
   }
 
-  giveMeMoves(piece) {
+  _giveMeMoves(piece) {
     let forHandle = this.moves(piece);
     if (forHandle instanceof Array) {
       let aux = {
@@ -372,10 +370,16 @@ class MovesManager {
     return forHandle;
   }
 
+  giveMeMoves(piece) {
+    //for external use, no simulation
+    this.alPasoChance = [];
+    return this._giveMeMoves(piece);
+  }
+
   ifCheckMate(color) {
     for (let p of this.board.pieces) {
       if (p.color === color) {
-        let movs = this.giveMeMoves(p);
+        let movs = this._giveMeMoves(p);
         if (movs.moves.length > 0 || movs.threats.length > 0) {
           return PLAY;
         }
