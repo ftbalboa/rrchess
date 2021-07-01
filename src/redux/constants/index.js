@@ -1,2 +1,2 @@
-export const SELECT_PIECE = 'SELECT_PIECE';
-export const SET_BOARD = 'SET_BOARD'
+export const SET_STATUS = 'SET_STATUS'
+export const SET_COLOR = 'SET_COLOR'

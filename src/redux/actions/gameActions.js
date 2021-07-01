@@ -1,15 +1,15 @@
-import { SELECT_PIECE, SET_BOARD } from '../constants';
+import {SET_STATUS, SET_COLOR } from '../constants';
 
-export function selectPiece(id) {
+export function setStatus(status) {
 	return {
-		type: SELECT_PIECE,
-		payload: id,
+		type: SET_STATUS,
+		payload: status,
 	};
 }
 
-export function setBoard(board) {
+export function setColor(color) {
 	return {
-		type: SET_BOARD,
-		payload: board,
+		type: SET_COLOR,
+		payload: color,
 	};
 }

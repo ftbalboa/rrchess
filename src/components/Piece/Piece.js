@@ -36,11 +36,13 @@ const imgDicc = {
   Threat: ThrImg,
 };
 
-export function PieceReact({ piece, clickSel, clickThr }) {
+export function PieceReact({ piece, clickSel, clickThr, posFun }) {
+  const color = useSelector((state)=>state.chess.playerColor);
+  const rBoard = [8,7,6,5,4,3,2,1];
   const style = {
     backgroundColor: "transparent",
-    gridColumn: `${piece.pos[1] + 1}`,
-    gridRow: `${piece.pos[0] + 1}`,
+    gridColumn: posFun(piece.pos,'column'),
+    gridRow:  posFun(piece.pos,'row'),
     width: "100%",
     height: "100%",
     display: "flex",
@@ -57,13 +59,13 @@ export function PieceReact({ piece, clickSel, clickThr }) {
   };
 
   return (
-    <div style={style}>
+    <div style={{...style}}>
       <div className="pieceContainer">
         <img
           alt="piece"
           className="piece"
           src={img}
-          onClick={() => handleClickSel()}
+          onClick={() =>   {handleClickSel()}}
         ></img>
         {piece.if_select ? (
           <img

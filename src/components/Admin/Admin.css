@@ -1,6 +1,9 @@
-.Admin{
+.adminBoard{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
     background-color: Cornsilk;
     padding: 0.5em;
-    width: 100%;
+    width: 90%;
     height: 100%;
 }

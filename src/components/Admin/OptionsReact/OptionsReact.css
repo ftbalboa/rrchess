@@ -1,0 +1,26 @@
+.OR{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    background-color: DarkCyan;
+    width:40%;
+    border-radius: 5%;
+    color: white;
+}
+
+.optionButton{
+    width: 6em;
+    background-color: transparent;
+    border-radius: 5%;
+    color: white;
+    margin: 0.25em;
+}
+
+.activeOptionButton{
+    width: 6em;
+    background-color: transparent;
+    border-radius: 5%;
+    color: white;
+    margin: 0.25em;
+}

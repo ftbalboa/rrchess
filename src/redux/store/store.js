@@ -3,7 +3,7 @@ import { gameReducer } from '../reducer/gameReducer';
 
 export const store = configureStore({
   reducer: {
-    counter: gameReducer,
+    chess: gameReducer,
     devTools: true,
   },
 });

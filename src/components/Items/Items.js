@@ -11,11 +11,11 @@ const imgDicc = {
   posMove: posMove,
 };
 
-export function ItemReact({ pos, click }) {
+export function ItemReact({ pos, click, posFun }) {
   const style = {
     backgroundColor: "transparent",
-    gridColumn: `${pos[1] + 1}`,
-    gridRow: `${pos[0] + 1}`,
+    gridColumn: posFun(pos,'column'),
+    gridRow: posFun(pos,'row'),
     width: "100%",
     height: "100%",
     display: "flex",
