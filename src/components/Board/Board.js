@@ -15,12 +15,12 @@ export function BoardReact() {
   const [posThreats, changePosThreats] = useState([]);
 
   //Board flip
-  const color = useSelector((state)=>state.chess.playerColor);
-  const rBoard = [8,7,6,5,4,3,2,1];
+  const color = useSelector((state) => state.chess.playerColor);
+  const rBoard = [8, 7, 6, 5, 4, 3, 2, 1];
   const posFunction = (pos, way) => {
-    let n = way === 'row'? pos[0] : pos[1] ;
-    return color === 'white'? `${rBoard[n]}` : `${n + 1}`
-  }
+    let n = way === "row" ? pos[0] : pos[1];
+    return color === "white" ? `${rBoard[n]}` : `${n + 1}`;
+  };
 
   const onClickPiece = (piece) => {
     changePosThreats(manager.clean_threats(posThreats));
@@ -51,6 +51,16 @@ export function BoardReact() {
 
   return (
     <div className="Board">
+      {posMoves.map((mov, index) => (
+        <ItemReact
+          key={index}
+          pos={mov}
+          click={(pos) => {
+            onClickPosMov(pos);
+          }}
+          posFun={(p, w) => posFunction(p, w)}
+        />
+      ))}
       {pieces.map((piece) => (
         <PieceReact
           key={piece.id}
@@ -61,17 +71,7 @@ export function BoardReact() {
           clickThr={(piece) => {
             onClickThreat(piece);
           }}
-          posFun = {(p,w)=>posFunction(p,w)}
-        />
-      ))}
-      {posMoves.map((mov, index) => (
-        <ItemReact
-          key={index}
-          pos={mov}
-          click={(pos) => {
-            onClickPosMov(pos);
-          }}
-          posFun = {(p,w)=>posFunction(p,w)}
+          posFun={(p, w) => posFunction(p, w)}
         />
       ))}
     </div>
