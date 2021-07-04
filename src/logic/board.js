@@ -10,8 +10,8 @@ class Board {
       "Rook",
       "Horse",
       "Bishop",
-      "King",
       "Queen",
+      "King",
       "Bishop",
       "Horse",
       "Rook",
@@ -85,6 +85,7 @@ class Board {
       this.forSimulate.old_pos = piece.pos;
       this.mov(piece, pos, true);
     } else {
+      if(this.board[pos[0]][pos[1]].name !== 'King')
       this.forSimulate.piece = piece;
       this.forSimulate.old_pos = piece.pos;
       this.forSimulate.deletePiece = this.board[pos[0]][pos[1]];

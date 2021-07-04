@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setBoard } from "../../redux/actions/gameActions";
+import {setBoard} from "../../redux/actions/gameActions";
 import styles from "./Board.css";
 
 import Manager from "../../logic/gameManager";
@@ -13,15 +13,33 @@ export function BoardReact() {
   const [pieces, changePieces] = useState(manager.get_pieces());
   const [posMoves, changePosMoves] = useState([]);
   const [posThreats, changePosThreats] = useState([]);
-
+  const dispatch = useDispatch();
   //Board flip
   const color = useSelector((state) => state.chess.playerColor);
   const rBoard = [8, 7, 6, 5, 4, 3, 2, 1];
   const posFunction = (pos, way) => {
     let n = way === "row" ? pos[0] : pos[1];
-    return color === "white" ? `${rBoard[n]}` : `${n + 1}`;
+    let forReturn;
+    switch (color + " " + way) {
+      case "white row":
+        forReturn = `${rBoard[n]}`;
+        break;
+      case "white column":
+        forReturn = `${n + 1}`;
+        break;
+      case "black row":
+        forReturn = `${n + 1}`;
+        break;
+      case "black column":
+        forReturn = `${rBoard[n]}`;
+        break;
+      default:
+        return forReturn;
+    }
+    return forReturn;
   };
 
+  //select piece
   const onClickPiece = (piece) => {
     changePosThreats(manager.clean_threats(posThreats));
     manager.select_piece(piece);
@@ -35,6 +53,7 @@ export function BoardReact() {
     changePieces([...manager.get_pieces()]);
   };
 
+  //move piece
   const onClickPosMov = (pos) => {
     changePosThreats(manager.clean_threats(posThreats));
     manager.mov_piece(pos);
@@ -42,6 +61,7 @@ export function BoardReact() {
     changePosMoves([]);
   };
 
+  //eat piece
   const onClickThreat = (piece) => {
     manager.eat(piece);
     changePieces([...manager.get_pieces()]);

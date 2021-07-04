@@ -1,6 +1,7 @@
 import Board from "./board.js";
 import MovesManager from "./movesManager.js";
-
+import { addMove, test } from "../redux/actions/gameActions.js";
+import { store } from "../redux/store/store.js";
 const PLAY = "play";
 const CHECKMATE = "checkmate";
 const TABLES = "tables";
@@ -46,18 +47,23 @@ class GameManager {
   }
 
   mov_piece(pos) {
+    // for Redux state
+    let movType = "standar";
     //castle handle
     if (
       this.piece_selected.name === "King" &&
       Math.abs(this.piece_selected.get_pos()[1] - pos[1]) > 1
     ) {
-      if (this.piece_selected.get_pos()[1] - pos[1] < 0) {
+      if (this.piece_selected.get_pos()[1] - pos[1] > 0) {
         //queenside
-        this.board.mov(this.board.get_objInPos([pos[0], 7]), [pos[0], 4]);
+        this.board.mov(this.board.get_objInPos([pos[0], 0]), [pos[0], 3]);
+        movType = "longCastle";
       } else {
         //kingside
-        this.board.mov(this.board.get_objInPos([pos[0], 0]), [pos[0], 2]);
+        this.board.mov(this.board.get_objInPos([pos[0], 7]), [pos[0], 5]);
+        movType = "shortCastle";
       }
+      store.dispatch(addMove(movType));
     }
     //al paso handle
     if (
@@ -65,13 +71,31 @@ class GameManager {
       pos[1] === this.board.alpasoPos[1] &&
       this.piece_selected.name === "Pawn"
     ) {
+      movType = "alPaso";
+      store.dispatch(
+        addMove(movType, this.piece_selected.name, this.piece_selected.pos, pos)
+      );
       this.board.delete_piece(this.board.alpasoMark);
     }
     this.board.alpasoHandle(this.piece_selected, pos);
     //standar
+    if (movType === "standar") {
+      let ifAmb = this.amb(pos);
+      if (ifAmb.length > 0) movType = "ambiguos";
+      store.dispatch(
+        addMove(
+          movType,
+          this.piece_selected.name,
+          this.piece_selected.pos,
+          pos,
+          ifAmb
+        )
+      );
+    }
     this.board.mov(this.piece_selected, pos);
     //handle promoves
-    this.promoves_pawn(this.piece_selected);
+    if (this.promoves_pawn(this.piece_selected))
+      store.dispatch(addMove("promoves", this.promoves));
     //continue
     this.piece_selected.change_select();
     this.piece_selected = null;
@@ -81,9 +105,12 @@ class GameManager {
       : (this.turn = this.board.get_colors()[0]);
     //checkMate handle
     this.status = this.moves_manager.ifCheckMate(this.turn);
+    if (this.status === CHECKMATE) store.dispatch(addMove("checkmate"));
+    else if (this.moves_manager.isCheckNow(this.turn))
+      store.dispatch(addMove("check"));
   }
 
-  set_threats(threats){
+  set_threats(threats) {
     threats.forEach((t) => {
       this.board.get_objInPos(t).set_if_threat(true);
     });
@@ -98,10 +125,22 @@ class GameManager {
 
   eat(eated_piece) {
     let new_pos = eated_piece.get_pos();
+    let ifAmb = this.amb(new_pos);
+    let movType = ifAmb.length > 0? 'ambiguosThr' : 'capture';
+    store.dispatch(
+      addMove(
+        movType,
+        this.piece_selected.name,
+        this.piece_selected.pos,
+        new_pos,
+        ifAmb
+      )
+    );
     this.board.delete_piece(eated_piece);
     this.board.mov(this.piece_selected, new_pos);
     //handle promove
-    this.promoves_pawn(this.piece_selected);
+    if (this.promoves_pawn(this.piece_selected))
+      store.dispatch(addMove("promoves", this.promoves));
     this.piece_selected.change_select();
     this.piece_selected = null;
     this.board.get_colors()[0] === this.turn
@@ -109,6 +148,9 @@ class GameManager {
       : (this.turn = this.board.get_colors()[0]);
     //checkMate handle
     this.status = this.moves_manager.ifCheckMate(this.turn);
+    if (this.status === CHECKMATE) store.dispatch(addMove("checkMate"));
+    else if (this.moves_manager.isCheckNow(this.turn))
+      store.dispatch(addMove("check"));
   }
 
   promoves_pawn(piece) {
@@ -118,7 +160,31 @@ class GameManager {
         (piece.color === "white" && piece.pos[0] === 7))
     ) {
       piece.name = this.promoves;
+      return true;
     }
+  }
+
+  amb(mov) {
+    let fR = [];
+    let pcs = this.board.pieces.filter(
+      (p) =>
+        p.name !== "Pawn" &&
+        p.name === this.piece_selected.name &&
+        p.color === this.piece_selected.color &&
+        p.id !== this.piece_selected.id
+    );
+    for (let i = 0; i < pcs.length; i++) {
+      let movs = this.moves_manager.giveMeMoves(pcs[i]);
+      let index = movs.moves.findIndex(
+        (m) => m[0] === mov[0] && m[1] === mov[1]
+      );
+      if (index === -1)
+        index = movs.threats.findIndex(
+          (m) => m[0] === mov[0] && m[1] === mov[1]
+        );
+      if (index !== -1) fR.push(pcs[i].pos);
+    }
+    return fR;
   }
 }
 

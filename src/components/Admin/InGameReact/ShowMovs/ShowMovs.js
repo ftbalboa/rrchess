@@ -7,17 +7,27 @@ import { Mov } from "./Mov/Mov";
 export function ShowMovs() {
   const dispatch = useDispatch();
   const [whiteActive, changeWhite] = useState(true);
-const arr = ["a","b","c","d","e","f","g","h","i","j"]
+
+  const ajustArray = (a) => {
+    let fr = [];
+    a.forEach((mov) => {
+      if (fr.length === 0 || fr[fr.length - 1].length > 1) fr.push([]);
+      fr[fr.length - 1].push(mov);
+    });
+    return fr
+  };
+
+  const arrMovs = useSelector((state) => ajustArray(state.chess.moves));
 
   return (
     <div className="OR">
-        <p> Movs </p>
-        <p> Aperture </p>
-        <div className="movs">
-            {arr.map((mov,index)=>(
-                <Mov name={mov} key={index} />
-            ))}
-        </div>
+      <p> Movs </p>
+      <p> Aperture </p>
+      <div className="movs">
+        {arrMovs.map((mov, index) => (
+          <Mov movs={mov} key={index} index={index+1} />
+        ))}
+      </div>
     </div>
   );
 }

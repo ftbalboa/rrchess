@@ -58,9 +58,9 @@ class MovesManager {
     moves = this.ajustMoves(piece, moves);
     if (!this.evadeCastle) {
       if (this.can_castle(piece, true))
-        moves.moves.push([piece.get_pos()[0], 1]);
+        moves.moves.push([piece.get_pos()[0], 6]);
       if (this.can_castle(piece, false))
-        moves.moves.push([piece.get_pos()[0], 5]);
+        moves.moves.push([piece.get_pos()[0], 2]);
     }
     return moves;
   }
@@ -284,22 +284,22 @@ class MovesManager {
     let forReturn = true;
     let pos = king.get_pos();
     let rook = short
-      ? this.board.get_objInPos([pos[0], 0])
-      : this.board.get_objInPos([pos[0], 7]);
+      ? this.board.get_objInPos([pos[0], 7])
+      : this.board.get_objInPos([pos[0], 0]);
     if (rook && rook.never_move && king.never_move) {
       //hay piezas en el medio?
-      if (rook.pos[1] === 0) {
+      if (rook.pos[1] === 7) {
         if (
-          this.board.get_objInPos([pos[0], 1]) ||
-          this.board.get_objInPos([pos[0], 2])
+          this.board.get_objInPos([pos[0], 6]) ||
+          this.board.get_objInPos([pos[0], 5])
         ) {
           forReturn = false;
         } else {
           if (
             this.threats_in_squares(
               [
-                [pos[0], 1],
-                [pos[0], 2],
+                [pos[0], 6],
+                [pos[0], 5],
               ],
               king.color
             )
@@ -308,18 +308,18 @@ class MovesManager {
         }
       } else {
         if (
-          this.board.get_objInPos([pos[0], 4]) ||
-          this.board.get_objInPos([pos[0], 5]) ||
-          this.board.get_objInPos([pos[0], 6])
+          this.board.get_objInPos([pos[0], 1]) ||
+          this.board.get_objInPos([pos[0], 2]) ||
+          this.board.get_objInPos([pos[0], 3])
         ) {
           forReturn = false;
         } else {
           if (
             this.threats_in_squares(
               [
-                [pos[0], 4],
-                [pos[0], 5],
-                [pos[0], 6],
+                [pos[0], 1],
+                [pos[0], 2],
+                [pos[0], 3],
               ],
               king.color
             )
@@ -377,7 +377,8 @@ class MovesManager {
   }
 
   ifCheckMate(color) {
-    for (let p of this.board.pieces) {
+    let hS = [...this.board.pieces]
+    for (let p of hS) {
       if (p.color === color) {
         let movs = this._giveMeMoves(p);
         if (movs.moves.length > 0 || movs.threats.length > 0) {

@@ -1,0 +1,12 @@
+.textMov{
+    display:flex;
+    width: 100%;
+}
+
+.movBox{
+    width: 50%;
+}
+
+.numBox{
+    width:20%
+}
