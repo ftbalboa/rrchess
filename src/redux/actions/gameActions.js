@@ -1,9 +1,16 @@
-import { SET_STATUS, SET_COLOR, ADD_MOVE, TEST } from "../constants";
+import { SET_STATUS, SET_COLOR, ADD_MOVE, TEST, SET_MODE } from "../constants";
 
 export function setStatus(status) {
   return {
     type: SET_STATUS,
     payload: status,
+  };
+}
+
+export function setMode(mode) {
+  return {
+    type: SET_MODE,
+    payload: mode,
   };
 }
 

@@ -1,9 +1,10 @@
-import { SET_STATUS, SET_COLOR, ADD_MOVE, TEST } from "../constants";
+import { SET_STATUS, SET_COLOR, ADD_MOVE, TEST, SET_MODE } from "../constants";
 
 const initialState = {
   playerColor: "white",
   status: null,
   moves: [],
+  mode: "practice"
 };
 
 const cols = ["a", "b", "c", "d", "e", "f", "g", "h"];
@@ -56,6 +57,9 @@ export const gameReducer = (state = initialState, action) => {
 
     case SET_COLOR:
       return { ...state, playerColor: action.payload };
+
+    case SET_MODE:
+      return { ...state, mode: action.payload };
 
     case ADD_MOVE:
       const { movType, pos, pieceName, initPos, ambPos } = action.payload;

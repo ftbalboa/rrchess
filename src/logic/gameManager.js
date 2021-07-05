@@ -6,6 +6,8 @@ const PLAY = "play";
 const CHECKMATE = "checkmate";
 const TABLES = "tables";
 
+const cols = ['a','b','c','d','e','f','g','h'];
+
 class GameManager {
   constructor() {
     this.board = new Board();
@@ -16,6 +18,7 @@ class GameManager {
     this.moves_manager = new MovesManager(this.board);
     this.promoves = "Queen";
     this.status = PLAY;
+    this.moveStr = ""; 
   }
 
   possMovs(piece) {
@@ -47,6 +50,7 @@ class GameManager {
   }
 
   mov_piece(pos) {
+    this.addToMovList(this.piece_selected.pos,pos);
     // for Redux state
     let movType = "standar";
     //castle handle
@@ -124,6 +128,7 @@ class GameManager {
   }
 
   eat(eated_piece) {
+    this.addToMovList(this.piece_selected.pos,eated_piece.pos);
     let new_pos = eated_piece.get_pos();
     let ifAmb = this.amb(new_pos);
     let movType = ifAmb.length > 0? 'ambiguosThr' : 'capture';
@@ -159,9 +164,28 @@ class GameManager {
       ((piece.color === "black" && piece.pos[0] === 0) ||
         (piece.color === "white" && piece.pos[0] === 7))
     ) {
+      this.addPromovetoList();
       piece.name = this.promoves;
       return true;
     }
+  }
+
+  addPromovetoList(){
+    let letter = this.promoves[0].toLowerCase();
+    if(letter === 'h') letter = 'n'
+    this.moveStr = this.moveStr.slice(0, -1);
+    this.moveStr = this.moveStr.concat(letter,' ');
+  }
+
+  addToMovList(oP, nP){
+    let oldPos = [...oP];
+    let newPos = [...nP];
+    [oldPos[1], newPos[1]] = [cols[oldPos[1]],cols[newPos[1]]];
+    [oldPos[0], newPos[0]] = [oldPos[0] + 1, newPos[0] + 1];
+    [oldPos[0], oldPos[1]] = [oldPos[1], oldPos[0]];
+    [newPos[0], newPos[1]] = [newPos[1], newPos[0]];
+    let move = "".concat(oldPos.join(''), newPos.join(''), " ");
+    this.moveStr = this.moveStr.concat(move);
   }
 
   amb(mov) {

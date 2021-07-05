@@ -85,8 +85,8 @@ class Board {
       this.forSimulate.old_pos = piece.pos;
       this.mov(piece, pos, true);
     } else {
-      if(this.board[pos[0]][pos[1]].name !== 'King')
-      this.forSimulate.piece = piece;
+      if (this.board[pos[0]][pos[1]].name !== "King")
+        this.forSimulate.piece = piece;
       this.forSimulate.old_pos = piece.pos;
       this.forSimulate.deletePiece = this.board[pos[0]][pos[1]];
       this.delete_piece(this.forSimulate.deletePiece);
@@ -137,6 +137,34 @@ class Board {
       this.alpasoMark = null;
       this.alpasoPos = [];
     }
+  }
+
+  fen() {
+    let forReturn = "";
+    let n = 0;
+    for (let i = 7; i > -1; i--) {
+      for (let j = 0; j < 8; j++) {
+        let p = this.board[i][j];
+        if (p) {
+          if (n > 0) {
+            forReturn = forReturn.concat(`${n}`);
+          }
+          let letter = p.name[0];
+          if (letter === "H") letter = "N";
+          letter = p.color === "white" ? letter : letter.toLowerCase();
+          forReturn = forReturn.concat(letter);
+          n = 0;
+        } else {
+          n++;
+        }
+      }
+      if (n > 0) {
+        forReturn = forReturn.concat(`${n}`);
+      }
+      forReturn = forReturn.concat("/");
+      n = 0;
+    }
+    return forReturn;
   }
 }
 

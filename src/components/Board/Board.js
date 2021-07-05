@@ -39,6 +39,9 @@ export function BoardReact() {
     return forReturn;
   };
 
+  const status = useSelector((state) => state.chess.playerColor);
+  const mode = useSelector((state) => state.chess.playerColor);
+
   //select piece
   const onClickPiece = (piece) => {
     changePosThreats(manager.clean_threats(posThreats));
