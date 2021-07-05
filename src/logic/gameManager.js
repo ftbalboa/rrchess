@@ -2,6 +2,9 @@ import Board from "./board.js";
 import MovesManager from "./movesManager.js";
 import { addMove, test } from "../redux/actions/gameActions.js";
 import { store } from "../redux/store/store.js";
+
+import Oponent from "./oponent.js";
+
 const PLAY = "play";
 const CHECKMATE = "checkmate";
 const TABLES = "tables";
