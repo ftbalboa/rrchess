@@ -4,18 +4,18 @@ import { selectPiece } from "../../redux/actions/gameActions";
 import "./Piece.css";
 
 //Images
-import BpImg from "../../img/blackPawn.png";
-import BrImg from "../../img/blackRook.png";
-import BhImg from "../../img/blackHorse.png";
-import BbImg from "../../img/blackBishop.png";
-import BqImg from "../../img/blackQueen.png";
-import BkImg from "../../img/blackKing.png";
-import WpImg from "../../img/whitePawn.png";
-import WrImg from "../../img/whiteRook.png";
-import WhImg from "../../img/whiteHorse.png";
-import WbImg from "../../img/whiteBishop.png";
-import WqImg from "../../img/whiteQueen.png";
-import WkImg from "../../img/whiteKing.png";
+import BpImg from "../../img/pixel/blackPawn.png";
+import BrImg from "../../img/pixel/blackRook.png";
+import BhImg from "../../img/pixel/blackHorse.png";
+import BbImg from "../../img/pixel/blackBishop.png";
+import BqImg from "../../img/pixel/blackQueen.png";
+import BkImg from "../../img/pixel/blackKing.png";
+import WpImg from "../../img/pixel/whitePawn.png";
+import WrImg from "../../img/pixel/whiteRook.png";
+import WhImg from "../../img/pixel/whiteHorse.png";
+import WbImg from "../../img/pixel/whiteBishop.png";
+import WqImg from "../../img/pixel/whiteQueen.png";
+import WkImg from "../../img/pixel/whiteKing.png";
 import SelImg from "../../img/select.png";
 import ThrImg from "../../img/threat.png";
 
@@ -39,7 +39,7 @@ const imgDicc = {
 export function PieceReact({ piece, clickSel, clickThr, posFun }) {
   const color = useSelector((state)=>state.chess.playerColor);
   const rBoard = [8,7,6,5,4,3,2,1];
-  const style = {
+  let style = {
     backgroundColor: "transparent",
     gridColumn: posFun(piece.pos,'column'),
     gridRow:  posFun(piece.pos,'row'),
@@ -50,6 +50,7 @@ export function PieceReact({ piece, clickSel, clickThr, posFun }) {
     justifyContent: "center",
     pointerEvents: "all",
   };
+  if(!piece.alive) style = {display: 'none'}
   const img = imgDicc[`${piece.name}${piece.color}`];
   const handleClickSel = () => {
     clickSel(piece);

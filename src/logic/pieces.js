@@ -13,6 +13,7 @@ class Piece {
     this.if_threat = false;
     this.label = "";
     this.never_move = true;
+    this.alive = true;
   }
 
   //SETTERS

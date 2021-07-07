@@ -1,10 +1,11 @@
-import { SET_STATUS, SET_COLOR, ADD_MOVE, TEST, SET_MODE } from "../constants";
+import { SET_STATUS, SET_COLOR, ADD_MOVE, TEST, SET_MODE, SET_TURN } from "../constants";
 
 const initialState = {
   playerColor: "white",
   status: null,
   moves: [],
-  mode: "practice"
+  mode: "practice",
+  turn: 'white'
 };
 
 const cols = ["a", "b", "c", "d", "e", "f", "g", "h"];
@@ -54,6 +55,9 @@ export const gameReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_STATUS:
       return { ...state, status: action.payload };
+
+    case SET_TURN:
+      return { ...state, turn: action.payload };
 
     case SET_COLOR:
       return { ...state, playerColor: action.payload };

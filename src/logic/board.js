@@ -77,6 +77,7 @@ class Board {
   delete_piece(piece) {
     let index = this.pieces.findIndex((p) => p.id === piece.id);
     this.pieces.splice(index, 1);
+    piece.alive = false;
   }
 
   init_simulate(piece, pos) {
@@ -99,6 +100,7 @@ class Board {
     this.mov(this.forSimulate.piece, this.forSimulate.old_pos, true);
     if (this.forSimulate.deletePiece) {
       this.pieces.push(this.forSimulate.deletePiece);
+      this.forSimulate.deletePiece.alive = true;
     }
     this.board[deletePos[0]][deletePos[1]] = this.forSimulate.deletePiece
       ? this.forSimulate.deletePiece

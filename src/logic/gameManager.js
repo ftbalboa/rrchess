@@ -1,6 +1,6 @@
 import Board from "./board.js";
 import MovesManager from "./movesManager.js";
-import { addMove, test } from "../redux/actions/gameActions.js";
+import { addMove, test, setTurn } from "../redux/actions/gameActions.js";
 import { store } from "../redux/store/store.js";
 
 import Oponent from "./oponent.js";
@@ -9,19 +9,59 @@ const PLAY = "play";
 const CHECKMATE = "checkmate";
 const TABLES = "tables";
 
-const cols = ['a','b','c','d','e','f','g','h'];
+let oponent = new Oponent();
+
+const cols = ["a", "b", "c", "d", "e", "f", "g", "h"];
+
+let id = 0;
+let turn = 'white';
+let board = new Board();
+let moveStr = "";
 
 class GameManager {
   constructor() {
-    this.board = new Board();
+    this.id = id;
+    id++;
     this.selected = false;
-    this.turn = this.board.get_colors()[0];
     this.movs = [];
     this.piece_selected = null;
-    this.moves_manager = new MovesManager(this.board);
+    this.moves_manager = new MovesManager(board);
     this.promoves = "Queen";
     this.status = PLAY;
-    this.moveStr = ""; 
+    oponent.chargeCb(()=>{this.aux();});
+  }
+
+  oponentMove(cb) {
+    oponent.reqMove(moveStr);
+  }
+
+  aux(){
+    let mov = oponent.readMsg();
+    mov = this.movToPos(mov);
+    this.piece_selected = mov.piece;
+    this.piece_selected.change_select();
+    let eated_piece = board.get_objInPos(mov.pos);
+    if (eated_piece) {
+      this.eat(eated_piece);
+    } else {
+      this.mov_piece(mov.pos);
+    }
+  }
+
+  movToPos(mov) {
+    let pos = mov.slice(-2).split("");
+    pos[0] = cols.indexOf(pos[0]);
+    pos[1] = Number(pos[1]) - 1;
+    [pos[0], pos[1]] = [pos[1], pos[0]];
+    let posPiece = mov.slice(0, 2).split("");
+    posPiece[0] = cols.indexOf(posPiece[0]);
+    posPiece[1] = Number(posPiece[1]) - 1;
+    [posPiece[0], posPiece[1]] = [posPiece[1], posPiece[0]];
+    let piece = board.get_objInPos(posPiece);
+    return {
+      piece: piece,
+      pos: pos,
+    };
   }
 
   possMovs(piece) {
@@ -31,14 +71,14 @@ class GameManager {
   }
 
   select_piece(piece) {
-    if (!this.piece_selected && piece.get_color() === this.turn) {
+    if (!this.piece_selected && piece.get_color() === turn) {
       piece.change_select();
       this.piece_selected = piece;
     } else if (this.piece_selected) {
       this.piece_selected.change_select();
       if (
         this.piece_selected.id !== piece.id &&
-        piece.get_color() === this.turn
+        piece.get_color() === turn
       ) {
         piece.change_select();
         this.piece_selected = piece;
@@ -49,11 +89,11 @@ class GameManager {
   }
 
   get_pieces() {
-    return this.board.get_pieces();
+    return board.get_pieces();
   }
 
   mov_piece(pos) {
-    this.addToMovList(this.piece_selected.pos,pos);
+    this.addToMovList(this.piece_selected.pos, pos);
     // for Redux state
     let movType = "standar";
     //castle handle
@@ -63,28 +103,28 @@ class GameManager {
     ) {
       if (this.piece_selected.get_pos()[1] - pos[1] > 0) {
         //queenside
-        this.board.mov(this.board.get_objInPos([pos[0], 0]), [pos[0], 3]);
+        board.mov(board.get_objInPos([pos[0], 0]), [pos[0], 3]);
         movType = "longCastle";
       } else {
         //kingside
-        this.board.mov(this.board.get_objInPos([pos[0], 7]), [pos[0], 5]);
+        board.mov(board.get_objInPos([pos[0], 7]), [pos[0], 5]);
         movType = "shortCastle";
       }
       store.dispatch(addMove(movType));
     }
     //al paso handle
     if (
-      pos[0] === this.board.alpasoPos[0] &&
-      pos[1] === this.board.alpasoPos[1] &&
+      pos[0] === board.alpasoPos[0] &&
+      pos[1] === board.alpasoPos[1] &&
       this.piece_selected.name === "Pawn"
     ) {
       movType = "alPaso";
       store.dispatch(
         addMove(movType, this.piece_selected.name, this.piece_selected.pos, pos)
       );
-      this.board.delete_piece(this.board.alpasoMark);
+      board.delete_piece(board.alpasoMark);
     }
-    this.board.alpasoHandle(this.piece_selected, pos);
+    board.alpasoHandle(this.piece_selected, pos);
     //standar
     if (movType === "standar") {
       let ifAmb = this.amb(pos);
@@ -99,7 +139,7 @@ class GameManager {
         )
       );
     }
-    this.board.mov(this.piece_selected, pos);
+    board.mov(this.piece_selected, pos);
     //handle promoves
     if (this.promoves_pawn(this.piece_selected))
       store.dispatch(addMove("promoves", this.promoves));
@@ -107,34 +147,35 @@ class GameManager {
     this.piece_selected.change_select();
     this.piece_selected = null;
     //Change turn
-    this.board.get_colors()[0] === this.turn
-      ? (this.turn = this.board.get_colors()[1])
-      : (this.turn = this.board.get_colors()[0]);
+    board.get_colors()[0] === turn
+      ? (turn = board.get_colors()[1])
+      : (turn = board.get_colors()[0]);
     //checkMate handle
-    this.status = this.moves_manager.ifCheckMate(this.turn);
+    this.status = this.moves_manager.ifCheckMate(turn);
     if (this.status === CHECKMATE) store.dispatch(addMove("checkmate"));
-    else if (this.moves_manager.isCheckNow(this.turn))
+    else if (this.moves_manager.isCheckNow(turn))
       store.dispatch(addMove("check"));
+    store.dispatch(setTurn(turn));
   }
 
   set_threats(threats) {
     threats.forEach((t) => {
-      this.board.get_objInPos(t).set_if_threat(true);
+      board.get_objInPos(t).set_if_threat(true);
     });
   }
 
   clean_threats(threats) {
     for (let threat of threats) {
-      this.board.get_objInPos(threat).set_if_threat(false);
+      board.get_objInPos(threat).set_if_threat(false);
     }
     return [];
   }
 
   eat(eated_piece) {
-    this.addToMovList(this.piece_selected.pos,eated_piece.pos);
+    this.addToMovList(this.piece_selected.pos, eated_piece.pos);
     let new_pos = eated_piece.get_pos();
     let ifAmb = this.amb(new_pos);
-    let movType = ifAmb.length > 0? 'ambiguosThr' : 'capture';
+    let movType = ifAmb.length > 0 ? "ambiguosThr" : "capture";
     store.dispatch(
       addMove(
         movType,
@@ -144,21 +185,22 @@ class GameManager {
         ifAmb
       )
     );
-    this.board.delete_piece(eated_piece);
-    this.board.mov(this.piece_selected, new_pos);
+    board.delete_piece(eated_piece);
+    board.mov(this.piece_selected, new_pos);
     //handle promove
     if (this.promoves_pawn(this.piece_selected))
       store.dispatch(addMove("promoves", this.promoves));
     this.piece_selected.change_select();
     this.piece_selected = null;
-    this.board.get_colors()[0] === this.turn
-      ? (this.turn = this.board.get_colors()[1])
-      : (this.turn = this.board.get_colors()[0]);
+    board.get_colors()[0] === turn
+      ? (turn = board.get_colors()[1])
+      : (turn = board.get_colors()[0]);
     //checkMate handle
-    this.status = this.moves_manager.ifCheckMate(this.turn);
+    this.status = this.moves_manager.ifCheckMate(turn);
     if (this.status === CHECKMATE) store.dispatch(addMove("checkMate"));
-    else if (this.moves_manager.isCheckNow(this.turn))
+    else if (this.moves_manager.isCheckNow(turn))
       store.dispatch(addMove("check"));
+    store.dispatch(setTurn(turn));
   }
 
   promoves_pawn(piece) {
@@ -173,27 +215,27 @@ class GameManager {
     }
   }
 
-  addPromovetoList(){
+  addPromovetoList() {
     let letter = this.promoves[0].toLowerCase();
-    if(letter === 'h') letter = 'n'
-    this.moveStr = this.moveStr.slice(0, -1);
-    this.moveStr = this.moveStr.concat(letter,' ');
+    if (letter === "h") letter = "n";
+    moveStr = moveStr.slice(0, -1);
+    moveStr = moveStr.concat(letter, " ");
   }
 
-  addToMovList(oP, nP){
+  addToMovList(oP, nP) {
     let oldPos = [...oP];
     let newPos = [...nP];
-    [oldPos[1], newPos[1]] = [cols[oldPos[1]],cols[newPos[1]]];
+    [oldPos[1], newPos[1]] = [cols[oldPos[1]], cols[newPos[1]]];
     [oldPos[0], newPos[0]] = [oldPos[0] + 1, newPos[0] + 1];
     [oldPos[0], oldPos[1]] = [oldPos[1], oldPos[0]];
     [newPos[0], newPos[1]] = [newPos[1], newPos[0]];
-    let move = "".concat(oldPos.join(''), newPos.join(''), " ");
-    this.moveStr = this.moveStr.concat(move);
+    let move = "".concat(oldPos.join(""), newPos.join(""), " ");
+    moveStr = moveStr.concat(move);
   }
 
   amb(mov) {
     let fR = [];
-    let pcs = this.board.pieces.filter(
+    let pcs = board.pieces.filter(
       (p) =>
         p.name !== "Pawn" &&
         p.name === this.piece_selected.name &&

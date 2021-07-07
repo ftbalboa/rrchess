@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {setBoard} from "../../redux/actions/gameActions";
+import { setBoard } from "../../redux/actions/gameActions";
 import styles from "./Board.css";
 
 import Manager from "../../logic/gameManager";
@@ -13,7 +13,9 @@ export function BoardReact() {
   const [pieces, changePieces] = useState(manager.get_pieces());
   const [posMoves, changePosMoves] = useState([]);
   const [posThreats, changePosThreats] = useState([]);
+  const [flag, changeFlag] = useState(true);
   const dispatch = useDispatch();
+
   //Board flip
   const color = useSelector((state) => state.chess.playerColor);
   const rBoard = [8, 7, 6, 5, 4, 3, 2, 1];
@@ -39,9 +41,9 @@ export function BoardReact() {
     return forReturn;
   };
 
-  const status = useSelector((state) => state.chess.playerColor);
-  const mode = useSelector((state) => state.chess.playerColor);
-
+  const status = useSelector((state) => state.chess.status);
+  const mode = useSelector((state) => state.chess.mode);
+  const turn = useSelector((state) => state.chess.turn);
   //select piece
   const onClickPiece = (piece) => {
     changePosThreats(manager.clean_threats(posThreats));
@@ -72,6 +74,20 @@ export function BoardReact() {
     changePosThreats(manager.clean_threats(posThreats));
   };
 
+  if (color !== turn && flag) {
+    manager.oponentMove();
+    changeFlag(false);
+  } else if (color === turn && !flag) {
+    changeFlag(true);
+  }
+
+  // useEffect(()=>{
+  //   if(color !== turn){
+  //     manager.oponentMove()
+  //       changePieces([...manager.get_pieces()]);
+  //   }
+  // })
+
   return (
     <div className="Board">
       {posMoves.map((mov, index) => (
@@ -88,9 +104,13 @@ export function BoardReact() {
         <PieceReact
           key={piece.id}
           piece={piece}
-          clickSel={(piece) => {
-            onClickPiece(piece);
-          }}
+          clickSel={
+            turn === color
+              ? (piece) => {
+                  onClickPiece(piece);
+                }
+              : () => {}
+          }
           clickThr={(piece) => {
             onClickThreat(piece);
           }}

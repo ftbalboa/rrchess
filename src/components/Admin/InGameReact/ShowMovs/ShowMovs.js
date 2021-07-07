@@ -20,7 +20,7 @@ export function ShowMovs() {
   const arrMovs = useSelector((state) => ajustArray(state.chess.moves));
 
   return (
-    <div className="OR">
+    <div>
       <p> Movs </p>
       <p> Aperture </p>
       <div className="movs">

@@ -1,6 +1,8 @@
 .movs {
-  width: 10em;
+  width: 15em;
   overflow-y: auto;
-  height: 10em;
-  background-color: blue;
+  height: auto;
+  max-height: 10em;
+  background-color: black;
+  font-size: 0.8em;
 }

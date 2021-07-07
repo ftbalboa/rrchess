@@ -1,14 +1,13 @@
 import React from 'react';
 import './App.css';
 import {Admin} from './components/Admin/Admin'
-import {Nav} from './components/Nav/Nav'
 
-function App() {
+function About() {
   return (
-    <div className="App">
-      <Admin />
+    <div className="About">
+      Im an About
     </div>
   );
 }
 
-export default App;
+export default About;
