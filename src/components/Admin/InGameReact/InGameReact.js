@@ -13,7 +13,7 @@ export function InGameReact() {
     <div className="OR">
         <p> Name vs Computer</p>
         <p> Server ID: 0</p>
-        <ShowMovs />
+        <ShowMovs needReset = {true}/>
         <button>
           Rendirse
         </button>

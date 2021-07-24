@@ -1,8 +1,8 @@
-import { SET_STATUS, SET_COLOR, ADD_MOVE, TEST, SET_MODE, SET_TURN } from "../constants";
+import { SET_STATUS, SET_COLOR, ADD_MOVE, SET_MODE, SET_TURN, RESET_MOVES } from "../constants";
 
 const initialState = {
   playerColor: "white",
-  status: null,
+  status: 'pause', //{'pause','play', 'mated'}
   moves: [],
   mode: "practice",
   turn: 'white'
@@ -116,10 +116,9 @@ export const gameReducer = (state = initialState, action) => {
 
       return { ...state, moves: [...state.moves, newMove] };
 
-    case TEST:
-      console.log("from redux test:");
-      console.log(action.payload);
-      return state;
+      case RESET_MOVES:
+        return { ...state, moves: [] };
+
     default:
       return state;
   }

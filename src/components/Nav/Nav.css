@@ -1,9 +1,8 @@
 .Nav{
     background-color: black;
-    height: 2em;
+    height: 6vh;
     padding-top: 0.75em;
     color: white;
-    margin-bottom: 0.25em;
     padding-left: 0.5em;
     text-decoration: none;
     display: flex;

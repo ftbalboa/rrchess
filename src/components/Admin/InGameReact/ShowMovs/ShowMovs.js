@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setColor, setStatus } from "../../../../redux/actions/gameActions";
+import { resetMoves } from "../../../../redux/actions/gameActions";
 import styles from "./ShowMovs.css";
 import { Mov } from "./Mov/Mov";
 
-export function ShowMovs() {
+export function ShowMovs({needReset}) {
   const dispatch = useDispatch();
   const [whiteActive, changeWhite] = useState(true);
+
+  useEffect(() => {
+    needReset && dispatch(resetMoves());
+  }, []);
 
   const ajustArray = (a) => {
     let fr = [];
@@ -22,7 +26,6 @@ export function ShowMovs() {
   return (
     <div>
       <p> Movs </p>
-      <p> Aperture </p>
       <div className="movs">
         {arrMovs.map((mov, index) => (
           <Mov movs={mov} key={index} index={index+1} />

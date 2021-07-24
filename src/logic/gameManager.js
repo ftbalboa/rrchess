@@ -1,6 +1,6 @@
 import Board from "./board.js";
 import MovesManager from "./movesManager.js";
-import { addMove, test, setTurn } from "../redux/actions/gameActions.js";
+import { addMove, setStatus, setTurn } from "../redux/actions/gameActions.js";
 import { store } from "../redux/store/store.js";
 
 import Oponent from "./oponent.js";
@@ -14,7 +14,7 @@ let oponent = new Oponent();
 const cols = ["a", "b", "c", "d", "e", "f", "g", "h"];
 
 let id = 0;
-let turn = 'white';
+let turn = "white";
 let board = new Board();
 let moveStr = "";
 
@@ -28,14 +28,28 @@ class GameManager {
     this.moves_manager = new MovesManager(board);
     this.promoves = "Queen";
     this.status = PLAY;
-    oponent.chargeCb(()=>{this.aux();});
+    oponent.chargeCb(() => {
+      this.aux();
+    });
+  }
+
+  getMoveStr(){
+    return moveStr;
+  }
+
+  resetManager(){
+    id = 0;
+    turn = "white";
+    board = new Board();
+    this.moves_manager = new MovesManager(board);
+    moveStr = "";
   }
 
   oponentMove(cb) {
     oponent.reqMove(moveStr);
   }
 
-  aux(){
+  aux() {
     let mov = oponent.readMsg();
     mov = this.movToPos(mov);
     this.piece_selected = mov.piece;
@@ -76,10 +90,7 @@ class GameManager {
       this.piece_selected = piece;
     } else if (this.piece_selected) {
       this.piece_selected.change_select();
-      if (
-        this.piece_selected.id !== piece.id &&
-        piece.get_color() === turn
-      ) {
+      if (this.piece_selected.id !== piece.id && piece.get_color() === turn) {
         piece.change_select();
         this.piece_selected = piece;
       } else {
@@ -152,9 +163,15 @@ class GameManager {
       : (turn = board.get_colors()[0]);
     //checkMate handle
     this.status = this.moves_manager.ifCheckMate(turn);
-    if (this.status === CHECKMATE) store.dispatch(addMove("checkmate"));
-    else if (this.moves_manager.isCheckNow(turn))
-      store.dispatch(addMove("check"));
+    if (this.status === CHECKMATE) {
+      setTimeout(() => {
+        store.dispatch(addMove("checkMate"));
+      }, 0);
+      store.dispatch(setStatus("mated"));
+    } else if (this.moves_manager.isCheckNow(turn))
+      setTimeout(() => {
+        store.dispatch(addMove("check"));
+      }, 0);
     store.dispatch(setTurn(turn));
   }
 
@@ -197,9 +214,15 @@ class GameManager {
       : (turn = board.get_colors()[0]);
     //checkMate handle
     this.status = this.moves_manager.ifCheckMate(turn);
-    if (this.status === CHECKMATE) store.dispatch(addMove("checkMate"));
-    else if (this.moves_manager.isCheckNow(turn))
-      store.dispatch(addMove("check"));
+    if (this.status === CHECKMATE) {
+      setTimeout(() => {
+        store.dispatch(addMove("checkMate"));
+      }, 0);
+      store.dispatch(setStatus("mated"));
+    } else if (this.moves_manager.isCheckNow(turn))
+      setTimeout(() => {
+        store.dispatch(addMove("check"));
+      }, 0);
     store.dispatch(setTurn(turn));
   }
 

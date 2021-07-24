@@ -49,6 +49,7 @@ export function PieceReact({ piece, clickSel, clickThr, posFun }) {
     alignItems: "center",
     justifyContent: "center",
     pointerEvents: "all",
+    cursor: "pointer",
   };
   if(!piece.alive) style = {display: 'none'}
   const img = imgDicc[`${piece.name}${piece.color}`];

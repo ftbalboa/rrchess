@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setBoard } from "../../redux/actions/gameActions";
 import styles from "./Board.css";
 
 import Manager from "../../logic/gameManager";
@@ -42,20 +41,22 @@ export function BoardReact() {
   };
 
   const status = useSelector((state) => state.chess.status);
-  const mode = useSelector((state) => state.chess.mode);
   const turn = useSelector((state) => state.chess.turn);
+
   //select piece
   const onClickPiece = (piece) => {
-    changePosThreats(manager.clean_threats(posThreats));
-    manager.select_piece(piece);
-    if (piece.if_select) {
-      let forHandle = manager.possMovs(piece);
-      changePosMoves([...forHandle.moves]);
-      changePosThreats([...forHandle.threats]);
-    } else {
-      changePosMoves([]);
+    if (status === "play") {
+      changePosThreats(manager.clean_threats(posThreats));
+      manager.select_piece(piece);
+      if (piece.if_select) {
+        let forHandle = manager.possMovs(piece);
+        changePosMoves([...forHandle.moves]);
+        changePosThreats([...forHandle.threats]);
+      } else {
+        changePosMoves([]);
+      }
+      changePieces([...manager.get_pieces()]);
     }
-    changePieces([...manager.get_pieces()]);
   };
 
   //move piece
@@ -74,19 +75,26 @@ export function BoardReact() {
     changePosThreats(manager.clean_threats(posThreats));
   };
 
-  if (color !== turn && flag) {
+  // enemy moves
+  if (color !== turn && flag && status === "play") {
     manager.oponentMove();
     changeFlag(false);
   } else if (color === turn && !flag) {
     changeFlag(true);
   }
 
-  // useEffect(()=>{
-  //   if(color !== turn){
-  //     manager.oponentMove()
-  //       changePieces([...manager.get_pieces()]);
-  //   }
-  // })
+  // reset board
+  const resetBoard = () => {
+    manager.resetManager();
+    changeManager(new Manager());
+    setTimeout(()=>{ changePieces([...manager.get_pieces()]); }, 0);
+    changePosMoves([]);
+    changePosThreats([]);
+    changeFlag(true);
+  }
+  if(status === 'pause' && manager.getMoveStr().length !== 0){
+    resetBoard();
+    }
 
   return (
     <div className="Board">

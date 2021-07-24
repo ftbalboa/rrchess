@@ -1,4 +1,4 @@
-import { SET_STATUS, SET_COLOR, ADD_MOVE, TEST, SET_MODE, SET_TURN } from "../constants";
+import { SET_STATUS, SET_COLOR, ADD_MOVE, SET_MODE, SET_TURN, RESET_MOVES } from "../constants";
 
 export function setTurn(status) {
   return {
@@ -11,6 +11,12 @@ export function setStatus(status) {
   return {
     type: SET_STATUS,
     payload: status,
+  };
+}
+
+export function resetMoves() {
+  return {
+    type: RESET_MOVES,
   };
 }
 
@@ -41,9 +47,3 @@ export function addMove(movType, pieceName = "", initPos = [], pos = [], ambPos 
   };
 }
 
-export function test(payload) {
-  return {
-    type: TEST,
-    payload: payload,
-  };
-}

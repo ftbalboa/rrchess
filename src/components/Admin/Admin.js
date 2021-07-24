@@ -1,28 +1,30 @@
-import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { setBoard } from "../../redux/actions/gameActions";
+import { useSelector } from "react-redux";
 import styles from "./Admin.css";
-
 import { BoardReact } from "../Board/Board";
 import { OptionsReact } from "./OptionsReact/OptionsReact";
 import { InGameReact } from "./InGameReact/InGameReact";
+import { EndGameReact } from "./EndGameReact/EndGameReact";
 
 export function Admin() {
-
   const status = useSelector((state) => state.chess.status);
 
-  const optionsOrGame = ()=>{
-    if( status === 'play')
-    {return (<InGameReact />)}
-    else {return (<OptionsReact />)}
-  }
+  const optionsOrGame = () => {
+    switch (status) {
+      case "pause":
+        return <OptionsReact />;
+      case "play":
+        return <InGameReact />;
+      case "mated":
+        return <EndGameReact />;
+    }
+  };
 
   return (
     <div className="Admin">
-        <div className="adminBoard">
+      <div className="adminBoard">
         <BoardReact  />
         {optionsOrGame()}
-        </div>
+      </div>
     </div>
   );
 }
