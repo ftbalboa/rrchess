@@ -1,11 +1,20 @@
-import { SET_STATUS, SET_COLOR, ADD_MOVE, SET_MODE, SET_TURN, RESET_MOVES } from "../constants";
+import {
+  SET_STATUS,
+  SET_COLOR,
+  ADD_MOVE,
+  SET_MODE,
+  SET_TURN,
+  RESET_MOVES,
+  SET_NAME,
+} from "../constants";
 
 const initialState = {
   playerColor: "white",
-  status: 'pause', //{'pause','play', 'mated'}
+  status: "pause", //{'pause','play', 'mated'}
   moves: [],
   mode: "practice",
-  turn: 'white'
+  turn: "white",
+  name: "",
 };
 
 const cols = ["a", "b", "c", "d", "e", "f", "g", "h"];
@@ -62,6 +71,9 @@ export const gameReducer = (state = initialState, action) => {
     case SET_COLOR:
       return { ...state, playerColor: action.payload };
 
+    case SET_NAME:
+      return { ...state, name: action.payload };
+
     case SET_MODE:
       return { ...state, mode: action.payload };
 
@@ -116,8 +128,8 @@ export const gameReducer = (state = initialState, action) => {
 
       return { ...state, moves: [...state.moves, newMove] };
 
-      case RESET_MOVES:
-        return { ...state, moves: [] };
+    case RESET_MOVES:
+      return { ...state, moves: [] };
 
     default:
       return state;

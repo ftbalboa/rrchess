@@ -25,3 +25,8 @@
     margin: 0.25em;
     border:1px solid black
 }
+
+.nameInput{
+    background-color: transparent;
+    border-radius: 5%;
+}

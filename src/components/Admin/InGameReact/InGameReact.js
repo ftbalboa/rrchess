@@ -7,11 +7,11 @@ import { ShowMovs } from "./ShowMovs/ShowMovs";
 export function InGameReact() {
   const dispatch = useDispatch();
   const [whiteActive, changeWhite] = useState(true);
-
+  const playerName = useSelector((state) => state.chess.name);
 
   return (
     <div className="OR">
-        <p> Name vs Computer</p>
+        <p>{`${playerName} vs Computer`}</p>
         <p> Server ID: 0</p>
         <ShowMovs needReset = {true}/>
         <button>

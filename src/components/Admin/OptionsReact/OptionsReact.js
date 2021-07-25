@@ -3,24 +3,26 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   setColor,
   setStatus,
-  setMode,
+  setName
 } from "../../../redux/actions/gameActions";
 import styles from "./OptionsReact.css";
 
 export function OptionsReact() {
-  const nDiff = 9;
+  const nDiff = 10;
   const dispatch = useDispatch();
   const [whiteActive, changeWhite] = useState(true);
-  const [practiceActive, changePractice] = useState(true);
-
+  const [input, setInput] = useState({
+    name: "",
+  });
+  const handleInputChange = function (e) {
+    setInput({
+      ...input,
+      [e.target.name]: e.target.value,
+    });
+  };
   const setActiveColor = (color) => {
     changeWhite(color);
     dispatch(setColor(color ? "white" : "black"));
-  };
-
-  const setActivePractice = (practice) => {
-    changePractice(practice);
-    dispatch(setMode(practice ? "practice" : "IA"));
   };
 
   const difficulty = () => {
@@ -45,12 +47,26 @@ export function OptionsReact() {
     );
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(setStatus("play"));
+    dispatch(setName(input.name));
+  }
+
   return (
-    <div className="OR">
+    <form className="OR" onSubmit={handleSubmit}>
       Options
       <div>
-        Name
-        <input type="text" name="name" />
+        <label>Name:</label>
+        <input
+          type="text"
+          name="name"
+          value={input.name}
+          onChange={handleInputChange}
+          required="required"
+          maxlength="10"
+          className="nameInput"
+        />
       </div>
       <div>
         <p>Picture</p>A B C
@@ -84,14 +100,11 @@ export function OptionsReact() {
       </div>
       Diff
       {difficulty()}
-      <button
+      <input
+        type="submit"
         className="optionButton"
-        onClick={() => {
-          dispatch(setStatus("play"));
-        }}
-      >
-        Start
-      </button>
-    </div>
+        value="Start"
+      />
+    </form>
   );
 }

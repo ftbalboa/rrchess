@@ -1,8 +1,15 @@
-import { SET_STATUS, SET_COLOR, ADD_MOVE, SET_MODE, SET_TURN, RESET_MOVES } from "../constants";
+import { SET_STATUS, SET_COLOR, ADD_MOVE, SET_MODE, SET_TURN, RESET_MOVES, SET_NAME } from "../constants";
 
 export function setTurn(status) {
   return {
     type: SET_TURN,
+    payload: status,
+  };
+}
+
+export function setName(status) {
+  return {
+    type: SET_NAME,
     payload: status,
   };
 }
