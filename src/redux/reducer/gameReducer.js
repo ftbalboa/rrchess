@@ -6,15 +6,16 @@ import {
   SET_TURN,
   RESET_MOVES,
   SET_NAME,
+  SET_DIF,
 } from "../constants";
 
 const initialState = {
   playerColor: "white",
   status: "pause", //{'pause','play', 'mated'}
   moves: [],
-  mode: "practice",
   turn: "white",
   name: "",
+  dif: 1,
 };
 
 const cols = ["a", "b", "c", "d", "e", "f", "g", "h"];
@@ -73,6 +74,9 @@ export const gameReducer = (state = initialState, action) => {
 
     case SET_NAME:
       return { ...state, name: action.payload };
+
+    case SET_DIF:
+      return { ...state, dif: action.payload };
 
     case SET_MODE:
       return { ...state, mode: action.payload };

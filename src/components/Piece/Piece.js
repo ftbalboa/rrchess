@@ -37,8 +37,6 @@ const imgDicc = {
 };
 
 export function PieceReact({ piece, clickSel, clickThr, posFun }) {
-  const color = useSelector((state)=>state.chess.playerColor);
-  const rBoard = [8,7,6,5,4,3,2,1];
   let style = {
     backgroundColor: "transparent",
     gridColumn: posFun(piece.pos,'column'),

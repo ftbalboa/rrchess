@@ -29,4 +29,10 @@
 .nameInput{
     background-color: transparent;
     border-radius: 5%;
+    width: 40%;
+}
+
+.nameForm{
+display: flex;
+justify-content: center;
 }
