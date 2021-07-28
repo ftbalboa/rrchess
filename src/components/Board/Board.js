@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styles from "./Board.css";
 
@@ -12,7 +12,6 @@ export function BoardReact() {
   const [pieces, changePieces] = useState(manager.get_pieces());
   const [posMoves, changePosMoves] = useState([]);
   const [posThreats, changePosThreats] = useState([]);
-  const [flag, changeFlag] = useState(true);
   const dispatch = useDispatch();
 
   //Board flip
@@ -75,13 +74,20 @@ export function BoardReact() {
     changePosThreats(manager.clean_threats(posThreats));
   };
 
-  // enemy moves
-  if (color !== turn && flag && status === "play") {
-    manager.oponentMove();
-    changeFlag(false);
-  } else if (color === turn && !flag) {
-    changeFlag(true);
-  }
+  useEffect(()=>{
+    if (color !== turn && status === "play") {
+      manager.oponentMove();
+    }
+    if(status === 'pause' && manager.getMoveStr().length !== 0){
+      resetBoard();
+      }
+  },[status])
+
+  useEffect(async ()=>{
+    if (color !== turn && status === "play") {
+      manager.oponentMove();
+    }
+  },[turn])
 
   // reset board
   const resetBoard = () => {
@@ -90,11 +96,8 @@ export function BoardReact() {
     setTimeout(()=>{ changePieces([...manager.get_pieces()]); }, 0);
     changePosMoves([]);
     changePosThreats([]);
-    changeFlag(true);
   }
-  if(status === 'pause' && manager.getMoveStr().length !== 0){
-    resetBoard();
-    }
+
 
   return (
     <div className="Board">

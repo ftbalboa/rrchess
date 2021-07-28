@@ -18,6 +18,26 @@ let turn = "white";
 let board = new Board();
 let moveStr = "";
 
+const shuffleArr = (array) => {
+  let currentIndex = array.length,
+    randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex],
+      array[currentIndex],
+    ];
+  }
+
+  return array;
+};
+
 class GameManager {
   constructor() {
     this.id = id;
@@ -33,11 +53,11 @@ class GameManager {
     });
   }
 
-  getMoveStr(){
+  getMoveStr() {
     return moveStr;
   }
 
-  resetManager(){
+  resetManager() {
     id = 0;
     turn = "white";
     board = new Board();
@@ -45,13 +65,54 @@ class GameManager {
     moveStr = "";
   }
 
-  oponentMove(cb) {
-    oponent.reqMove(moveStr);
+  async oponentMove(cb) {
+    const dif = store.getState().chess.dif;
+    let randomMov = false;
+    if (dif === "Easy") randomMov = Math.random() < 0.7;
+    if (dif === "Medium") randomMov = Math.random() < 0.3;
+    if (randomMov) {
+      this.aux(false,this.randomMov());
+    } else {oponent.reqMove(moveStr);}
   }
 
-  aux() {
-    let mov = oponent.readMsg();
-    mov = this.movToPos(mov);
+  randomMov() {
+    const turn = store.getState().chess.turn;
+    let arr = [...board.get_pieces()].filter((p) => p.color === turn);
+    arr = shuffleArr(arr);
+    let mov = null;
+    let index = 0;
+    while (!mov) {
+      const movs = this.possMovs(arr[index],false);
+      const mot = Math.random() < 0.5;
+      if (mot) {
+        if (movs.moves.length > 0) {
+          let movArr = shuffleArr([...movs.moves]);
+          return { piece: arr[index], pos: movArr[0] };
+        }
+        if (movs.threats.length > 0) {
+          let movArr = shuffleArr([...movs.threats]);
+          return { piece: arr[index], pos: movArr[0] };
+        }
+      } else {
+        if (movs.threats.length > 0) {
+          let movArr = shuffleArr([...movs.threats]);
+          return { piece: arr[index], pos: movArr[0] };
+        }
+        if (movs.moves.length > 0) {
+          let movArr = shuffleArr([...movs.moves]);
+          return { piece: arr[index], pos: movArr[0] };
+        }
+      }
+      index++;
+    }
+  }
+
+  aux(engine = true, movData = null) {
+    let mov = movData;
+    if (engine) {
+      mov = oponent.readMsg();
+      mov = this.movToPos(mov);
+    }
     this.piece_selected = mov.piece;
     this.piece_selected.change_select();
     let eated_piece = board.get_objInPos(mov.pos);
@@ -78,9 +139,9 @@ class GameManager {
     };
   }
 
-  possMovs(piece) {
+  possMovs(piece, thr = true) {
     let movs = this.moves_manager.giveMeMoves(piece);
-    this.set_threats(movs.threats);
+    thr && this.set_threats(movs.threats);
     return movs;
   }
 

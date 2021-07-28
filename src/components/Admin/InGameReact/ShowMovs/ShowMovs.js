@@ -6,7 +6,6 @@ import { Mov } from "./Mov/Mov";
 
 export function ShowMovs({needReset}) {
   const dispatch = useDispatch();
-  const [whiteActive, changeWhite] = useState(true);
 
   useEffect(() => {
     needReset && dispatch(resetMoves());

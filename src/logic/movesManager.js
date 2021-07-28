@@ -172,7 +172,7 @@ class MovesManager {
     frPush(false, true);
     if (piece.get_never_move()) {
       moves = [[[2 * a, 0]]];
-      frPush(false, true);
+      if(!this.board.get_objInPos([a>0? 2 : 5,piece.pos[1]]))frPush(false, true);
     }
     moves = [[[1 * a, 1]]];
     frPush(true, false);
