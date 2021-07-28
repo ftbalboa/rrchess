@@ -7,6 +7,8 @@ import {
   RESET_MOVES,
   SET_NAME,
   SET_DIF,
+  SET_ID,
+  SET_GAMES_LIST,
 } from "../constants";
 
 const initialState = {
@@ -16,6 +18,8 @@ const initialState = {
   turn: "white",
   name: "",
   dif: 1,
+  id: "en espera",
+  gameList: [],
 };
 
 const cols = ["a", "b", "c", "d", "e", "f", "g", "h"];
@@ -65,6 +69,12 @@ export const gameReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_STATUS:
       return { ...state, status: action.payload };
+
+    case SET_ID:
+      return { ...state, id: action.payload };
+
+    case SET_GAMES_LIST:
+      return { ...state, gameList: action.payload };
 
     case SET_TURN:
       return { ...state, turn: action.payload };
