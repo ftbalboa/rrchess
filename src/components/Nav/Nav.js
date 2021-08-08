@@ -3,19 +3,36 @@ import { useSelector, useDispatch } from "react-redux";
 import { setBoard } from "../../redux/actions/gameActions";
 import styles from "./Nav.css";
 import { NavLink } from "react-router-dom";
+import Navbar from "react-bootstrap/Navbar";
+import Container from "react-bootstrap/Container";
+import logo from "../../assets/logo/rookLogo.svg";
+
 
 export function Nav() {
   return (
-    <div className="Nav">
-      <NavLink exact to="/" className="navTitle">
-        Another pixel chess :)
-      </NavLink>
-      <NavLink to="/database" className="navItem" activeClassName="active">
-        Database
-      </NavLink>
-      <NavLink to="/about" className="navItem" activeClassName="active">
-        About
-      </NavLink>
-    </div>
+    <Navbar bg="dark">
+    <Container>
+        <NavLink exact to="/" className="navTitle">
+          <Container>
+            <Navbar.Brand href="#home">
+              <img
+                src={logo}
+                width="30"
+                height="30"
+                className="d-inline-block align-top"
+                alt="React Bootstrap logo"
+              />
+            </Navbar.Brand>
+            Another pixel chess :)
+          </Container>
+        </NavLink>
+        <NavLink to="/database" className="navItem">
+          Database
+        </NavLink>
+        <NavLink to="/about" className="navItem">
+          About
+        </NavLink>
+    </Container>
+    </Navbar>
   );
 }

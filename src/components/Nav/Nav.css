@@ -11,23 +11,18 @@
 }
 
 .active{
-    color: white;
-    text-decoration: underline red;
+    color: blue;
 }
 
 .navTitle{
     font-size: 1.2em;
     color:white;
     text-decoration: none;
-    margin:1em;
-    padding-bottom: 0.5em;
 }
 
 .navItem{
     color:white;
     margin-left: auto;
-    padding-right: 5em;
     font-size: 0.9em;
     text-decoration: none;
-    padding-bottom: 0.5em;
 }

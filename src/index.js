@@ -9,10 +9,12 @@ import { Detail } from "./components/Detail/Detail";
 import { store } from "./redux/store/store";
 import { Provider } from "react-redux";
 import { Route, HashRouter as Router } from "react-router-dom";
+import { Container } from "react-bootstrap";
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
+    <Container className="bodyCont">
       <Router>
         <Route path="/" component={Nav} />
         <Route exact path="/" component={App} />
@@ -24,6 +26,7 @@ ReactDOM.render(
           render={({ match }) => <Detail gameIndex={match.params.gameIndex} />}
         />
       </Router>
+      </Container>
     </Provider>
   </React.StrictMode>,
   document.getElementById("root")
