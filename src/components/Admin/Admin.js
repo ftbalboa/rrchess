@@ -21,10 +21,10 @@ export function Admin() {
   };
 
   return (
-    <Container>
+    <Container className="adminBoard">
       <Row>
-        <Col sm="7"><BoardReact /></Col>
-        <Col sm="5" md="5">{optionsOrGame()}</Col>
+        <Col md="auto"><BoardReact /></Col>
+        <Col md="auto">{optionsOrGame()}</Col>
       </Row>
     </Container>
   );

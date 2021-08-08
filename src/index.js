@@ -10,11 +10,12 @@ import { store } from "./redux/store/store";
 import { Provider } from "react-redux";
 import { Route, HashRouter as Router } from "react-router-dom";
 import { Container } from "react-bootstrap";
+import { Footer } from "./components/Footer/Footer";
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-    <Container className="bodyCont">
+    <Container>
       <Router>
         <Route path="/" component={Nav} />
         <Route exact path="/" component={App} />
@@ -25,6 +26,7 @@ ReactDOM.render(
           path="/detail/:gameIndex"
           render={({ match }) => <Detail gameIndex={match.params.gameIndex} />}
         />
+        <Route path="/" component={Footer} />
       </Router>
       </Container>
     </Provider>

@@ -87,62 +87,49 @@ export function OptionsReact() {
       <Form onSubmit={handleSubmit} className="p-3 mb-2 bg-dark text-white">
       <Col>
         Options
-        <Form.Group controlId="playerName" className="m-4">
-          <Form.Label>Name:</Form.Label>
+        <Form.Group controlId="playerName" className="m-2">
+          <Form.Label>Player</Form.Label>
           <Form.Control
             type="text"
             required="required"
             maxLength="10"
             className="form-control"
             size="sm"
+            name="name"
+            onChange={handleInputChange}
           />
-          {/* <input
-          type="text"
-          name="name"
-          value={input.name}
-          onChange={handleInputChange}
-          required="required"
-          maxLength="10"
-          className="nameInput"
-        /> */}
         </Form.Group>
-        <Form.Group controlId="playerColor" className="m-4">
-        <Form.Label>Pieces</Form.Label>
-        <ButtonGroup>
+        <Form.Group controlId="playerColor" className="m-2">
+        <Col>
+        <Row><Form.Label>Pieces</Form.Label></Row>
+        <Row><ButtonGroup size = "sm">
           <Button
+            className="m-1"
+            variant="outline-light"
             name="blackColor"
-            className={
-              input.color !== "blackColor"
-                ? "optionButton"
-                : "activeOptionButton"
-            }
             onClick={handleColor}
           >
             Black
           </Button>
           <Button
+            className="m-1"
+            variant="outline-light"
             name="randomColor"
-            className={
-              input.color !== "randomColor"
-                ? "optionButton"
-                : "activeOptionButton"
-            }
             onClick={handleColor}
           >
             Random
           </Button>
           <Button
+            className="m-1"
+            variant="outline-light"
             name="whiteColor"
-            className={
-              input.color !== "whiteColor"
-                ? "optionButton"
-                : "activeOptionButton"
-            }
             onClick={handleColor}
           >
             White
           </Button>
           </ButtonGroup>
+          </Row>
+          </Col>
           </Form.Group>
         Diff
         {difficulty()}

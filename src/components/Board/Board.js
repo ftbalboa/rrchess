@@ -6,6 +6,7 @@ import Manager from "../../logic/gameManager";
 
 import { PieceReact } from "../Piece/Piece";
 import { ItemReact } from "../Items/Items";
+import { Container } from "react-bootstrap";
 
 export function BoardReact() {
   const [manager, changeManager] = useState(new Manager());
@@ -100,6 +101,7 @@ export function BoardReact() {
 
 
   return (
+    <Container>
     <div className="Board">
       {posMoves.map((mov, index) => (
         <ItemReact
@@ -129,5 +131,6 @@ export function BoardReact() {
         />
       ))}
     </div>
+    </Container>
   );
 }

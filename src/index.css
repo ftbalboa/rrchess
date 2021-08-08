@@ -13,7 +13,6 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   height: 100vh;
-  background-color: black !important;
     background-image: url("/src/assets/backgrounds/t2.png");
   background-size: 500px 500px;
 }
@@ -23,6 +22,3 @@ code {
     monospace;
 }
 
-.bodyCont{
-  background-color: black;
-}

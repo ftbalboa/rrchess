@@ -1,0 +1,7 @@
+.Footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  min-height: 40px;
+  background-color: #343a40;
+}
