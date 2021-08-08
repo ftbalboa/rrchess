@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Container, Form, Col, Row, ButtonGroup, Button } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import {
   setColor,
@@ -7,7 +8,7 @@ import {
   setDif,
   setTurn,
 } from "../../../redux/actions/gameActions";
-import styles from "./OptionsReact.css";
+//import styles from "./OptionsReact.css";
 
 export function OptionsReact() {
   const dispatch = useDispatch();
@@ -70,21 +71,32 @@ export function OptionsReact() {
     e.preventDefault();
     dispatch(setName(input.name));
     dispatch(setDif(input.dif));
-    dispatch(setTurn('white'));
+    dispatch(setTurn("white"));
     if (input.color === "randomColor") {
       Math.random() < 0.5
-        ? dispatch(setColor('white'))
-        : dispatch(setColor('black'));
+        ? dispatch(setColor("white"))
+        : dispatch(setColor("black"));
     }
-    setTimeout(()=>{dispatch(setStatus("play"))},0);
+    setTimeout(() => {
+      dispatch(setStatus("play"));
+    }, 0);
   };
 
   return (
-    <form className="OR" onSubmit={handleSubmit}>
-      Options
-      <div className="nameForm">
-        <label>Name:</label>
-        <input
+    <Container>
+      <Form onSubmit={handleSubmit} className="p-3 mb-2 bg-dark text-white">
+      <Col>
+        Options
+        <Form.Group controlId="playerName" className="m-4">
+          <Form.Label>Name:</Form.Label>
+          <Form.Control
+            type="text"
+            required="required"
+            maxLength="10"
+            className="form-control"
+            size="sm"
+          />
+          {/* <input
           type="text"
           name="name"
           value={input.name}
@@ -92,43 +104,51 @@ export function OptionsReact() {
           required="required"
           maxLength="10"
           className="nameInput"
-        />
-      </div>
-      <div>Pieces</div>
-      <div>
-        <button
-          name="blackColor"
-          className={
-            input.color !== "blackColor" ? "optionButton" : "activeOptionButton"
-          }
-          onClick={handleColor}
-        >
-          Black
-        </button>
-        <button
-          name="randomColor"
-          className={
-            input.color !== "randomColor"
-              ? "optionButton"
-              : "activeOptionButton"
-          }
-          onClick={handleColor}
-        >
-          Random
-        </button>
-        <button
-          name="whiteColor"
-          className={
-            input.color !== "whiteColor" ? "optionButton" : "activeOptionButton"
-          }
-          onClick={handleColor}
-        >
-          White
-        </button>
-      </div>
-      Diff
-      {difficulty()}
-      <input type="submit" className="optionButton" value="Start" />
-    </form>
+        /> */}
+        </Form.Group>
+        <Form.Group controlId="playerColor" className="m-4">
+        <Form.Label>Pieces</Form.Label>
+        <ButtonGroup>
+          <Button
+            name="blackColor"
+            className={
+              input.color !== "blackColor"
+                ? "optionButton"
+                : "activeOptionButton"
+            }
+            onClick={handleColor}
+          >
+            Black
+          </Button>
+          <Button
+            name="randomColor"
+            className={
+              input.color !== "randomColor"
+                ? "optionButton"
+                : "activeOptionButton"
+            }
+            onClick={handleColor}
+          >
+            Random
+          </Button>
+          <Button
+            name="whiteColor"
+            className={
+              input.color !== "whiteColor"
+                ? "optionButton"
+                : "activeOptionButton"
+            }
+            onClick={handleColor}
+          >
+            White
+          </Button>
+          </ButtonGroup>
+          </Form.Group>
+        Diff
+        {difficulty()}
+        <input type="submit" className="optionButton" value="Start" />
+        </Col>
+      </Form>
+    </Container>
   );
 }

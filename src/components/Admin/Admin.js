@@ -4,6 +4,7 @@ import { BoardReact } from "../Board/Board";
 import { OptionsReact } from "./OptionsReact/OptionsReact";
 import { InGameReact } from "./InGameReact/InGameReact";
 import { EndGameReact } from "./EndGameReact/EndGameReact";
+import { Container, Row, Col } from "react-bootstrap";
 
 export function Admin() {
   const status = useSelector((state) => state.chess.status);
@@ -20,11 +21,11 @@ export function Admin() {
   };
 
   return (
-    <div className="Admin">
-      <div className="adminBoard">
-        <BoardReact  />
-        {optionsOrGame()}
-      </div>
-    </div>
+    <Container>
+      <Row>
+        <Col sm="7"><BoardReact /></Col>
+        <Col sm="5" md="5">{optionsOrGame()}</Col>
+      </Row>
+    </Container>
   );
 }
