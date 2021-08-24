@@ -6,6 +6,7 @@
 *{
   font-family: "fuentePrueba";
   color:white;
+  
 }
 
 body {
@@ -13,6 +14,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   height: 100vh;
+  background-image: url("/src/assets/backgrounds/t2.png");
   background-color: white;
 }
 
