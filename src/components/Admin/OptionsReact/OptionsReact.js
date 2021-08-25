@@ -49,14 +49,15 @@ export function OptionsReact() {
   };
 
   const difficulty = () => {
-    let forMap = ["Easy", "Medium", "Hard"];
+    let forMap = ["★", "★★", "★★★"];
+    let forText = ["Easy", "Medium", "Hard"];
     return (
       <div>
-        {forMap.map((n) => (
+        {forMap.map((n, i) => (
           <button
-            name={n}
-            key={n}
-            className={n !== input.dif ? "optionButton" : "activeOptionButton"}
+            name={forText[i]}
+            key={i}
+            className={forText[i] !== input.dif ? "optionButton" : "activeOptionButton"}
             onClick={handleDif}
           >
             {n}
@@ -70,13 +71,15 @@ export function OptionsReact() {
     e.preventDefault();
     dispatch(setName(input.name));
     dispatch(setDif(input.dif));
-    dispatch(setTurn('white'));
+    dispatch(setTurn("white"));
     if (input.color === "randomColor") {
       Math.random() < 0.5
-        ? dispatch(setColor('white'))
-        : dispatch(setColor('black'));
+        ? dispatch(setColor("white"))
+        : dispatch(setColor("black"));
     }
-    setTimeout(()=>{dispatch(setStatus("play"))},0);
+    setTimeout(() => {
+      dispatch(setStatus("play"));
+    }, 0);
   };
 
   return (
@@ -98,15 +101,26 @@ export function OptionsReact() {
       <div>
         <button
           name="blackColor"
+          style={{
+            backgroundColor: "black",
+            borderRadius: "100%",
+            height: "50px",
+            width: "50px",
+            marginRight:"20px",
+          }}
           className={
             input.color !== "blackColor" ? "optionButton" : "activeOptionButton"
           }
           onClick={handleColor}
-        >
-          Black
-        </button>
+        ></button>
         <button
           name="randomColor"
+          style={{
+            borderRadius: "100%",
+            height: "50px",
+            width: "50px",
+            background: "linear-gradient( 270deg, black, black 49%, white 51% )"
+          }}
           className={
             input.color !== "randomColor"
               ? "optionButton"
@@ -114,17 +128,27 @@ export function OptionsReact() {
           }
           onClick={handleColor}
         >
-          Random
+          {/* <div
+            style={{ backgroundColor: "white", width: "100%", height: "50%", borderRadius: "100%" }}
+          ></div>
+          <div
+            style={{ backgroundColor: "black", width: "100%", height: "50%" }}
+          ></div> */}
         </button>
         <button
           name="whiteColor"
+          style={{
+            backgroundColor: "white",
+            borderRadius: "100%",
+            height: "50px",
+            width: "50px",
+            marginLeft:"20px",
+          }}
           className={
             input.color !== "whiteColor" ? "optionButton" : "activeOptionButton"
           }
           onClick={handleColor}
-        >
-          White
-        </button>
+        ></button>
       </div>
       Diff
       {difficulty()}
