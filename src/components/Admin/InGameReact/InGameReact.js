@@ -1,4 +1,4 @@
-import { useSelector, useDispatch} from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import React, { useState, useEffect } from "react";
 import { setStatus, setId } from "../../../redux/actions/gameActions";
 import styles from "./InGameReact.css";
@@ -15,20 +15,24 @@ export function InGameReact() {
   }, []);
 
   const loadData = () => {
-      axios({
-        method: "get",
-        url: "http://localhost:3001/id",
-      }).then(function (response) {
-        dispatch(setId(response.data.id));
-      });
+    axios({
+      method: "get",
+      url: "http://localhost:3001/id",
+    }).then(function (response) {
+      dispatch(setId(response.data.id));
+    });
   };
 
   return (
-    <div className="OR">
-      <p>{`${playerName} vs Computer`}</p>
-      <p>{`Game ID: ${gameId}`}</p>
-      <ShowMovs needReset={true} />
+    <div className="IR">
+      <div style = {{height:"30%"}}>
+        <p style = {{marginTop:"40px"}}>{`${playerName} vs Computer`}</p>
+      </div>
+      <div style = {{height:"60%"}}>
+        <ShowMovs needReset={true} />
+      </div>
       <button
+        className={"mainButton"}
         onClick={() => {
           dispatch(setStatus("mated"));
         }}

@@ -41,13 +41,15 @@ export function EndGameReact() {
   };
 
   return (
-    <div className="OR">
-      <p> {`${turn === "white" ? "Black" : "White"} wins`}</p>
-      <p> Ty for the game</p>
-      <p>{`Game ID: ${gameId}`}</p>
+    <div className="ER">
+    <div style = {{height:"30%"}}>
+      <p style = {{marginTop:"40px"}}> {`${turn === "white" ? "Black" : "White"} wins`}</p>
       <p> {msg} </p>
+      </div>
+      <div style = {{height:"60%"}}>
       <ShowMovs />
-      <button onClick={handleClick}>Rematch</button>
+      </div>
+      <button className="mainButton" onClick={handleClick}>Rematch</button>
     </div>
   );
 }
