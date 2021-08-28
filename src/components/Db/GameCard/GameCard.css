@@ -1,24 +1,39 @@
 .gameCard{
-    width: 600px;
+    width: 400px;
+    height: 200px;
     display:flex;
     flex-direction: column;
-    align-items: center;
-    background-color: black;
     margin: 10px;
     border-radius: 2%;
-    border: 1px solid white;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    border: 2px solid grey;
+    box-shadow: 5px 5px 30px black;
+}
+
+.firstBoxCard{
+    width: 100%;
+    height: 80%;
+}
+
+.secondBoxCard{
+    height:40%;
+    width: 100%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    text-shadow: 1px 1px 1px white ;
+    background-color: #181818;
+}
+
+.imgCard{
+    width: 100%;
+    height: 100%;
 }
 
 .cardContain{
     display: flex;
     width: 100%;
-    margin: 10px;
     justify-content: space-around;
     align-items: center;
-    padding-top: 8px;
-    background-color: #262524;
 }
 
 .pic{
@@ -29,5 +44,4 @@
 
 .cardImg{
     width: 50px;
-    margin:10px;
 }

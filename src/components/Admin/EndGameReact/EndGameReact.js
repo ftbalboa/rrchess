@@ -25,7 +25,6 @@ export function EndGameReact() {
 
   const loadData = () => {
     let payload = {
-      id: gameId,
       playerName: name,
       playerColor: color,
       date: (new Date()).toLocaleString("en-US"),
