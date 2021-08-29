@@ -10,7 +10,7 @@ function Db() {
   return (
     <div className="Db">
     <SearchBar buttonName="Search by name" path="games" query="name"/>
-    {games.map((g, index)=><GameCard game={g} index={index} />)}
+    <div className={"cardsContainer"}>{games.map((g, index)=><GameCard game={g} key={index} />)}</div>
     </div>
   );
 }

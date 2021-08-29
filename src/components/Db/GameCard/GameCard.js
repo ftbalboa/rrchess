@@ -29,14 +29,17 @@ function getRandomInt(min, max) {
 }
 
 export function GameCard({ game, index }) {
-  const date = game.date.slice(0, 19).replace("T", " ");
   return (
     <div className="gameCard">
       <div className="firstBoxCard">
         <img src={bkgArr[getRandomInt(0, 9)]} className="imgCard"></img>
       </div>
       <div className="secondBoxCard">
-      {`${game.playerName} vs Computer`}
+        <div className={"cardName"}>
+          {game.playerColor === "white" ? game.playerName : "Computer"}
+        </div>
+        <div className={"vsDiv"}>vs</div>
+        <div className={"cardName"}> {game.playerColor === "black" ? game.playerName : "Computer"}</div>
       </div>
     </div>
   );
