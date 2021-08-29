@@ -9,6 +9,7 @@ import {
   SET_DIF,
   SET_ID,
   SET_GAMES_LIST,
+  SET_MOVES
 } from "../constants";
 
 const initialState = {
@@ -144,6 +145,9 @@ export const gameReducer = (state = initialState, action) => {
 
     case RESET_MOVES:
       return { ...state, moves: [] };
+
+    case SET_MOVES:
+      return {...state, moves: [...action.payload] };
 
     default:
       return state;

@@ -20,8 +20,8 @@ ReactDOM.render(
         <Route path="/database" component={Db} />
         <Route
           exact
-          path="/detail/:gameIndex"
-          render={({ match }) => <Detail gameIndex={match.params.gameIndex} />}
+          path="/detail/:gameId"
+          render={({ match }) => <Detail gameId={match.params.gameId} />}
         />
       </Router>
     </Provider>

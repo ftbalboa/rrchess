@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./GameCard.css";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 //Images
 import BkImg from "../../../img/pixel/blackKing.png";
@@ -28,11 +28,14 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
-export function GameCard({ game, index }) {
+export function GameCard({ game }) {
+  const [load, setLoad] = useState(false);
   return (
-    <div className="gameCard">
+    <NavLink to={`/detail/${game.id}`}>
+    <div className="gameCard" style={load? {display:"flex"} : {display:"none"} }>
+    
       <div className="firstBoxCard">
-        <img src={bkgArr[getRandomInt(0, 9)]} className="imgCard"></img>
+        <img src={bkgArr[getRandomInt(0, 9)]} style={load? {} : {display:"none"} } className="imgCard" onLoad={()=>setLoad(true)}></img>
       </div>
       <div className="secondBoxCard">
         <div className={"cardName"}>
@@ -41,6 +44,8 @@ export function GameCard({ game, index }) {
         <div className={"vsDiv"}>vs</div>
         <div className={"cardName"}> {game.playerColor === "black" ? game.playerName : "Computer"}</div>
       </div>
+      
     </div>
+    </NavLink>
   );
 }
