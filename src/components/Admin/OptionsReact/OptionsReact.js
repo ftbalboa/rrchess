@@ -28,7 +28,7 @@ export function OptionsReact() {
       setWinrate(res.data);
     });
   }, []);
-  console.log(winrate);
+
   const handleInputChange = function (e) {
     setInput({
       ...input,
@@ -84,9 +84,13 @@ export function OptionsReact() {
     );
   };
 
+  const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(setName(input.name));
+    dispatch(setName(input.name.length > 0 ? capitalizeFirstLetter(input.name) :  "Anonymous" ));
     dispatch(setDif(input.dif));
     dispatch(setTurn("white"));
     if (input.color === "randomColor") {
@@ -109,7 +113,6 @@ export function OptionsReact() {
           name="name"
           value={input.name}
           onChange={handleInputChange}
-          required="required"
           maxLength="10"
           className="nameInput"
         />

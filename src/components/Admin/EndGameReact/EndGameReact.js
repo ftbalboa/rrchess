@@ -6,7 +6,7 @@ import { ShowMovs } from "../InGameReact/ShowMovs/ShowMovs";
 const axios = require("axios");
 
 export function EndGameReact() {
-  const [msg, setMsg] = useState("");
+  const [msg, setMsg] = useState("Connecting to Database");
   const name = useSelector((state) => state.chess.name);
   const turn = useSelector((state) => state.chess.turn);
   const color = useSelector((state) => state.chess.playerColor);
@@ -32,23 +32,24 @@ export function EndGameReact() {
       win: turn === 'white'? 'black' : 'white',
       movs: movs,
     };
+    if(payload.movs.length < 5){setMsg("Game too short")}else{
     axios.post("http://localhost:3001/game", payload).then(
       ()=>{
-        setMsg("Partida incluida en la base de datos")
+        setMsg("Game saved in Database")
     }
-    );
+    );}
   };
 
   return (
     <div className="ER">
-    <div style = {{height:"30%"}}>
-      <p style = {{marginTop:"40px"}}> {`${turn === "white" ? "Black" : "White"} wins`}</p>
+    <div style = {{height:"30%", textAlign:"center"}}>
+      <h3 style = {{marginTop:"40px"}}> {`${turn === "white" ? "Black" : "White"} wins`}</h3>
       <p> {msg} </p>
       </div>
-      <div style = {{height:"60%"}}>
+      <div className = "inGameMovs">
       <ShowMovs />
       </div>
-      <button className="mainButton" onClick={handleClick}>Rematch</button>
+      <button className="mainButton"  onClick={handleClick}>Rematch</button>
     </div>
   );
 }

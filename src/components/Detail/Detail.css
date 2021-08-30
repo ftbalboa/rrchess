@@ -30,6 +30,10 @@
     width: 100%;
 }
 
+.detailTitle{
+    text-shadow: 1px 1px 10px YellowGreen;
+}
+
 .playerDetailContainer{
     width:200px;
     display:flex;

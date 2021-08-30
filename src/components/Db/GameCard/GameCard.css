@@ -8,10 +8,13 @@
     overflow:hidden;
     cursor:pointer;
     text-decoration: none;
+    text-shadow: 1px 1px 1px white ;
 }
 
 .gameCard:hover{
     filter: sepia(60%);
+    text-shadow: 1px 1px 10px YellowGreen;
+    box-shadow: 1px 1px 10px yellowgreen;
 }
 
 .firstBoxCard{
@@ -25,7 +28,6 @@
     display:flex;
     justify-content: center;
     align-items: center;
-    text-shadow: 1px 1px 1px white ;
     background-color: #181818;
     padding-left: 5px;
     padding-right: 5px;

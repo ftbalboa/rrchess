@@ -4,19 +4,24 @@ import { setGameList } from "../../../redux/actions/gameActions";
 import { useDispatch } from "react-redux";
 const axios = require("axios");
 
-export function SearchBar({buttonName,query,path}) {
+export function SearchBar({ buttonName, query, path }) {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const handleInputChange = function (e) {
     setSearch(e.target.value);
   };
+  const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  };
   const gameSearch = () => {
-    const aux = query? `?${query}=${search}`: `/${search}`
+    const aux = query
+      ? `?${query}=${capitalizeFirstLetter(search)}`
+      : `/${capitalizeFirstLetter(search)}`;
     axios({
       method: "get",
       url: `http://localhost:3001/${path}${aux}`,
     }).then(function (response) {
-      if (typeof response.data === 'string') dispatch(setGameList([]));
+      if (typeof response.data === "string") dispatch(setGameList([]));
       else dispatch(setGameList(response.data));
     });
   };

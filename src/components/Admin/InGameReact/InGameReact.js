@@ -12,9 +12,9 @@ export function InGameReact() {
   return (
     <div className="IR">
       <div style = {{height:"30%"}}>
-        <p style = {{marginTop:"40px"}}>{`${playerName} vs Computer`}</p>
+        <p style = {{marginTop:"40px", textShadow: "1px 1px 10px YellowGreen"}}>{`${playerName} vs Computer`}</p>
       </div>
-      <div style = {{height:"60%"}}>
+      <div className="inGameMovs">
         <ShowMovs needReset={true} />
       </div>
       <button

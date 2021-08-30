@@ -17,7 +17,7 @@
     text-decoration: none;
     margin:1em;
     padding-bottom: 0.5em;
-    animation: glow 3s infinite alternate;
+    animation: glow 2.5s infinite alternate;
 }
 
 @keyframes glow {

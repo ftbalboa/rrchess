@@ -25,7 +25,7 @@ export function Detail({ gameId }) {
     <div className="detailBox">
     {gameData?
       <div className="detailGame">
-      <h4>{gameData.date.toString().substring(0,10)}</h4>
+      <h4 className="detailTitle">{gameData.date.toString().substring(0,10)}</h4>
         <div className="namesDetailContainer">
           <div className="playerDetailContainer">
             {gameData.playerColor === "white"
@@ -53,8 +53,12 @@ export function Detail({ gameId }) {
           }}></div>
           </div>
         </div>
+        <div className="inGameMovs">
         <ShowMovs />
+        </div>
+        <div className="detailTitle">
         {`${gameData.playerColor === gameData.win? gameData.playerName : 'Computer'} won`}
+        </div>
       </div>
       : null }
     </div>
