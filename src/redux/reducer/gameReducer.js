@@ -9,7 +9,8 @@ import {
   SET_DIF,
   SET_ID,
   SET_GAMES_LIST,
-  SET_MOVES
+  SET_MOVES,
+  SET_WAIT,
 } from "../constants";
 
 const initialState = {
@@ -21,6 +22,7 @@ const initialState = {
   dif: 1,
   id: "en espera",
   gameList: [],
+  wait: false,
 };
 
 const cols = ["a", "b", "c", "d", "e", "f", "g", "h"];
@@ -147,7 +149,10 @@ export const gameReducer = (state = initialState, action) => {
       return { ...state, moves: [] };
 
     case SET_MOVES:
-      return {...state, moves: [...action.payload] };
+      return { ...state, moves: [...action.payload] };
+
+    case SET_WAIT:
+      return { ...state, wait: action.payload };
 
     default:
       return state;

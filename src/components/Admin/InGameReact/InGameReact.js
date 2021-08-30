@@ -8,20 +8,6 @@ import axios from "axios";
 export function InGameReact() {
   const dispatch = useDispatch();
   const playerName = useSelector((state) => state.chess.name);
-  const gameId = useSelector((state) => state.chess.id);
-
-  useEffect(() => {
-    loadData();
-  }, []);
-
-  const loadData = () => {
-    axios({
-      method: "get",
-      url: "http://localhost:3001/id",
-    }).then(function (response) {
-      dispatch(setId(response.data.id));
-    });
-  };
 
   return (
     <div className="IR">

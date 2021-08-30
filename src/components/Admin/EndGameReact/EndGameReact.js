@@ -10,9 +10,9 @@ export function EndGameReact() {
   const name = useSelector((state) => state.chess.name);
   const turn = useSelector((state) => state.chess.turn);
   const color = useSelector((state) => state.chess.playerColor);
-  const gameId = useSelector((state) => state.chess.id);
   const dif = useSelector((state) => state.chess.dif);
   const movs = useSelector((state) => state.chess.moves);
+  const wait = useSelector((state) => state.chess.wait);
 
   const dispatch = useDispatch();
   const handleClick = () => {
@@ -20,8 +20,8 @@ export function EndGameReact() {
   };
 
   useEffect(() => {
-    loadData();
-  }, []);
+    if(!wait)loadData();
+  }, [wait]);
 
   const loadData = () => {
     let payload = {
@@ -29,7 +29,7 @@ export function EndGameReact() {
       playerColor: color,
       date: (new Date()).toLocaleString("en-US"),
       dif: dif,
-      win: turn,
+      win: turn === 'white'? 'black' : 'white',
       movs: movs,
     };
     axios.post("http://localhost:3001/game", payload).then(

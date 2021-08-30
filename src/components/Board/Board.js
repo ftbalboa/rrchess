@@ -12,7 +12,6 @@ export function BoardReact() {
   const [pieces, changePieces] = useState(manager.get_pieces());
   const [posMoves, changePosMoves] = useState([]);
   const [posThreats, changePosThreats] = useState([]);
-  const dispatch = useDispatch();
 
   //Board flip
   const color = useSelector((state) => state.chess.playerColor);

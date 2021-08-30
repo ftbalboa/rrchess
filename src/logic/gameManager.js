@@ -1,13 +1,12 @@
 import Board from "./board.js";
 import MovesManager from "./movesManager.js";
-import { addMove, setStatus, setTurn } from "../redux/actions/gameActions.js";
+import { addMove, setStatus, setTurn, setWait } from "../redux/actions/gameActions.js";
 import { store } from "../redux/store/store.js";
 
 import Oponent from "./oponent.js";
 
 const PLAY = "play";
 const CHECKMATE = "checkmate";
-const TABLES = "tables";
 
 let oponent = new Oponent();
 
@@ -225,9 +224,13 @@ class GameManager {
     //checkMate handle
     this.status = this.moves_manager.ifCheckMate(turn);
     if (this.status === CHECKMATE) {
+      store.dispatch(setWait(true));
       setTimeout(() => {
         store.dispatch(addMove("checkMate"));
       }, 0);
+      setTimeout(() => {
+        store.dispatch(setWait(false));
+      }, 100);
       store.dispatch(setStatus("mated"));
     } else if (this.moves_manager.isCheckNow(turn))
       setTimeout(() => {
@@ -276,9 +279,13 @@ class GameManager {
     //checkMate handle
     this.status = this.moves_manager.ifCheckMate(turn);
     if (this.status === CHECKMATE) {
+      store.dispatch(setWait(true));
       setTimeout(() => {
         store.dispatch(addMove("checkMate"));
       }, 0);
+      setTimeout(() => {
+        store.dispatch(setWait(false));
+      }, 100);
       store.dispatch(setStatus("mated"));
     } else if (this.moves_manager.isCheckNow(turn))
       setTimeout(() => {
