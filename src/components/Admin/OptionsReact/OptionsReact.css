@@ -49,3 +49,18 @@ input[type=text]:focus{
 display: flex;
 justify-content: center;
 }
+
+.optionsTitle{
+    text-shadow: 1px 1px 10px YellowGreen;
+}
+
+.winrate{
+    display: flex;
+    font-size: 12px;
+}
+
+.winrateItem{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
