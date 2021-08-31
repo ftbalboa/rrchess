@@ -6,7 +6,8 @@ export function Mov({movs, index}) {
     display:"flex",
     width: "100%",
     "backgroundColor":`${index % 2 === 0? "DarkGrey" : "grey"}`,
-    "height": "0.1 vh",
+    "height": "25px",
+    "alignItems":"center"
   }
   return (
     <div style = {style}>

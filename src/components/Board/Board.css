@@ -8,4 +8,5 @@
     width: 30em;
     height: 30em;
     border: 5px solid white;
+    box-shadow: 0px 5px 40px black;
 }

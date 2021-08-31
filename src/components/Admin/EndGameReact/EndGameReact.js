@@ -6,13 +6,13 @@ import { ShowMovs } from "../InGameReact/ShowMovs/ShowMovs";
 const axios = require("axios");
 
 export function EndGameReact() {
-  const [msg, setMsg] = useState("");
+  const [msg, setMsg] = useState("Connecting to Database");
   const name = useSelector((state) => state.chess.name);
   const turn = useSelector((state) => state.chess.turn);
   const color = useSelector((state) => state.chess.playerColor);
-  const gameId = useSelector((state) => state.chess.id);
   const dif = useSelector((state) => state.chess.dif);
   const movs = useSelector((state) => state.chess.moves);
+  const wait = useSelector((state) => state.chess.wait);
 
   const dispatch = useDispatch();
   const handleClick = () => {
@@ -20,34 +20,36 @@ export function EndGameReact() {
   };
 
   useEffect(() => {
-    loadData();
-  }, []);
+    if(!wait)loadData();
+  }, [wait]);
 
   const loadData = () => {
     let payload = {
-      id: gameId,
       playerName: name,
       playerColor: color,
       date: (new Date()).toLocaleString("en-US"),
       dif: dif,
-      win: turn,
+      win: turn === 'white'? 'black' : 'white',
       movs: movs,
     };
+    if(payload.movs.length < 5){setMsg("Game too short")}else{
     axios.post("http://localhost:3001/game", payload).then(
       ()=>{
-        setMsg("Partida incluida en la base de datos")
+        setMsg("Game saved in Database")
     }
-    );
+    );}
   };
 
   return (
-    <div className="OR">
-      <p> {`${turn === "white" ? "Black" : "White"} wins`}</p>
-      <p> Ty for the game</p>
-      <p>{`Game ID: ${gameId}`}</p>
+    <div className="ER">
+    <div style = {{height:"30%", textAlign:"center"}}>
+      <h3 style = {{marginTop:"40px"}}> {`${turn === "white" ? "Black" : "White"} wins`}</h3>
       <p> {msg} </p>
+      </div>
+      <div className = "inGameMovs">
       <ShowMovs />
-      <button onClick={handleClick}>Rematch</button>
+      </div>
+      <button className="mainButton"  onClick={handleClick}>Rematch</button>
     </div>
   );
 }

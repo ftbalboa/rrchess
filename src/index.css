@@ -13,7 +13,12 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   height: 100vh;
-  background-color: black;
+  background-image: url("/src/assets/backgrounds/t2.png");
+  background-color: white;
+}
+
+a {
+  text-decoration: none; /* no underline */
 }
 
 code {

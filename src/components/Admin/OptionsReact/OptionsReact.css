@@ -5,9 +5,15 @@
     align-items: center;
     width:40%;
     border-radius: 5%;
-    border: 1px solid white;
     color: white;
+    text-shadow: 1px 1px 3px black ;
+    background-color: Grey;
+    box-shadow: 0px 5px 40px black;
 }
+
+input[type=text]:focus{
+    outline: 1px solid white; 
+  }
 
 .optionButton{
     width: 6em;
@@ -15,6 +21,9 @@
     border-radius: 5%;
     color: white;
     margin: 0.25em;
+    text-shadow: 0.5px 0.5px 1px black;
+    min-height: 20px;
+    min-width: 20px;
 }
 
 .activeOptionButton{
@@ -23,16 +32,35 @@
     border-radius: 5%;
     color: white;
     margin: 0.25em;
-    border:1px solid black
+    text-shadow: 0.5px 0.5px 1px black;
+    min-height: 20px;
+    box-shadow: 0px 0px 10px YellowGreen;
+    border: 3px solid YellowGreen;
 }
 
 .nameInput{
     background-color: transparent;
     border-radius: 5%;
     width: 40%;
+    text-shadow: 0.5px 0.5px 1px black;
 }
 
 .nameForm{
 display: flex;
 justify-content: center;
+}
+
+.optionsTitle{
+    text-shadow: 1px 1px 10px YellowGreen;
+}
+
+.winrate{
+    display: flex;
+    font-size: 12px;
+}
+
+.winrateItem{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
 }

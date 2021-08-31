@@ -74,10 +74,11 @@ class Board {
     piece.set_position(pos, silence);
   }
 
-  delete_piece(piece) {
+  delete_piece(piece, forEver) {
     let index = this.pieces.findIndex((p) => p.id === piece.id);
     this.pieces.splice(index, 1);
     piece.alive = false;
+    if(forEver) {this.board[piece.pos[0]][piece.pos[1]] = null;}
   }
 
   init_simulate(piece, pos) {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   setColor,
@@ -8,15 +8,27 @@ import {
   setTurn,
 } from "../../../redux/actions/gameActions";
 import styles from "./OptionsReact.css";
+const axios = require("axios");
 
 export function OptionsReact() {
   const dispatch = useDispatch();
   const playerName = useSelector((state) => state.chess.name);
+  const [winrate, setWinrate] = useState(null);
   const [input, setInput] = useState({
     name: playerName,
     dif: "Easy",
     color: "randomColor",
   });
+
+  useEffect(() => {
+    axios({
+      method: "GET",
+      url: `http://localhost:3001/winrate`,
+    }).then((res) => {
+      setWinrate(res.data);
+    });
+  }, []);
+
   const handleInputChange = function (e) {
     setInput({
       ...input,
@@ -49,39 +61,51 @@ export function OptionsReact() {
   };
 
   const difficulty = () => {
-    let forMap = ["Easy", "Medium", "Hard"];
+    let forMap = ["★", "★★", "★★★"];
+    let forText = ["Easy", "Medium", "Hard"];
     return (
-      <div>
-        {forMap.map((n) => (
-          <button
-            name={n}
-            key={n}
-            className={n !== input.dif ? "optionButton" : "activeOptionButton"}
-            onClick={handleDif}
-          >
-            {n}
-          </button>
+      <div className="winrate">
+        {forMap.map((n, i) => (
+          <div className="winrateItem">
+            <button
+              name={forText[i]}
+              key={i}
+              className={
+                forText[i] !== input.dif ? "optionButton" : "activeOptionButton"
+              }
+              onClick={handleDif}
+            >
+              {n}
+            </button>
+            {winrate ? Math.round(winrate[forText[i]]) + '%' : ""}
+          </div>
         ))}
       </div>
     );
   };
 
+  const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(setName(input.name));
+    dispatch(setName(input.name.length > 0 ? capitalizeFirstLetter(input.name) :  "Anonymous" ));
     dispatch(setDif(input.dif));
-    dispatch(setTurn('white'));
+    dispatch(setTurn("white"));
     if (input.color === "randomColor") {
       Math.random() < 0.5
-        ? dispatch(setColor('white'))
-        : dispatch(setColor('black'));
+        ? dispatch(setColor("white"))
+        : dispatch(setColor("black"));
     }
-    setTimeout(()=>{dispatch(setStatus("play"))},0);
+    setTimeout(() => {
+      dispatch(setStatus("play"));
+    }, 0);
   };
 
   return (
     <form className="OR" onSubmit={handleSubmit}>
-      Options
+      <div className="optionsTitle">Options</div>
       <div className="nameForm">
         <label>Name:</label>
         <input
@@ -89,44 +113,58 @@ export function OptionsReact() {
           name="name"
           value={input.name}
           onChange={handleInputChange}
-          required="required"
           maxLength="10"
           className="nameInput"
         />
       </div>
-      <div>Pieces</div>
+      <div className="optionsTitle">Pieces</div>
       <div>
         <button
           name="blackColor"
+          style={{
+            backgroundColor: "black",
+            borderRadius: "100%",
+            height: "50px",
+            width: "50px",
+            marginRight: "20px",
+          }}
           className={
             input.color !== "blackColor" ? "optionButton" : "activeOptionButton"
           }
           onClick={handleColor}
-        >
-          Black
-        </button>
+        ></button>
         <button
           name="randomColor"
+          style={{
+            borderRadius: "100%",
+            height: "50px",
+            width: "50px",
+            background:
+              "linear-gradient( 270deg, black, black 49%, white 51% )",
+          }}
           className={
             input.color !== "randomColor"
               ? "optionButton"
               : "activeOptionButton"
           }
           onClick={handleColor}
-        >
-          Random
-        </button>
+        ></button>
         <button
           name="whiteColor"
+          style={{
+            backgroundColor: "white",
+            borderRadius: "100%",
+            height: "50px",
+            width: "50px",
+            marginLeft: "20px",
+          }}
           className={
             input.color !== "whiteColor" ? "optionButton" : "activeOptionButton"
           }
           onClick={handleColor}
-        >
-          White
-        </button>
+        ></button>
       </div>
-      Diff
+      <div className="optionsTitle">Diff</div>
       {difficulty()}
       <input type="submit" className="optionButton" value="Start" />
     </form>

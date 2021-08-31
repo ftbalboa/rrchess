@@ -8,7 +8,7 @@ import Db from "./components/Db/Db";
 import { Detail } from "./components/Detail/Detail";
 import { store } from "./redux/store/store";
 import { Provider } from "react-redux";
-import { Route, HashRouter as Router } from "react-router-dom";
+import { Route, BrowserRouter as Router } from "react-router-dom";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -20,8 +20,8 @@ ReactDOM.render(
         <Route path="/database" component={Db} />
         <Route
           exact
-          path="/detail/:gameIndex"
-          render={({ match }) => <Detail gameIndex={match.params.gameIndex} />}
+          path="/detail/:gameId"
+          render={({ match }) => <Detail gameId={match.params.gameId} />}
         />
       </Router>
     </Provider>
