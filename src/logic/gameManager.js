@@ -193,7 +193,7 @@ class GameManager {
       store.dispatch(
         addMove(movType, this.piece_selected.name, this.piece_selected.pos, pos)
       );
-      board.delete_piece(board.alpasoMark);
+      board.delete_piece(board.alpasoMark, true);
     }
     board.alpasoHandle(this.piece_selected, pos);
     //standar
