@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setStatus } from "../../../redux/actions/gameActions";
 import styles from "./EndGameReact.css";
 import { ShowMovs } from "../InGameReact/ShowMovs/ShowMovs";
+import { API } from "../../..";
 const axios = require("axios");
 
 export function EndGameReact() {
@@ -33,7 +34,7 @@ export function EndGameReact() {
       movs: movs,
     };
     if(payload.movs.length < 5){setMsg("Game too short")}else{
-    axios.post("http://localhost:3001/game", payload).then(
+    axios.post(`${API}/game`, payload).then(
       ()=>{
         setMsg("Game saved in Database")
     }

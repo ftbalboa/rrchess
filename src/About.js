@@ -1,6 +1,5 @@
 import React from "react";
 import "./About.css";
-import { Admin } from "./components/Admin/Admin";
 
 function About() {
   return (

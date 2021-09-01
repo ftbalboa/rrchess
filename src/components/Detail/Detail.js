@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { API } from "../..";
 import { setMoves } from "../../redux/actions/gameActions";
 import { ShowMovs } from "../Admin/InGameReact/ShowMovs/ShowMovs";
 import styles from "./Detail.css";
@@ -11,7 +12,7 @@ export function Detail({ gameId }) {
   useEffect(()=>{
     axios({
       method: "GET",
-      url: `http://localhost:3001/game`,
+      url: `${API}/game`,
       params: { idGame: gameId},
     }).then((res) => {
       setGameData(res.data);

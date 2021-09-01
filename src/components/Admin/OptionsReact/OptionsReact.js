@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { API } from "../../..";
 import {
   setColor,
   setStatus,
@@ -23,7 +24,7 @@ export function OptionsReact() {
   useEffect(() => {
     axios({
       method: "GET",
-      url: `http://localhost:3001/winrate`,
+      url: `${API}/winrate`,
     }).then((res) => {
       setWinrate(res.data);
     });

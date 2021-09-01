@@ -10,3 +10,12 @@
   padding:4px;
   margin-bottom: 40px;
 }
+
+@media (max-width: 800px) {
+  .movs {
+    width: 100%;
+    height: 100%;
+    height: 100px;
+
+  }
+}
