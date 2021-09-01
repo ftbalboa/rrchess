@@ -7,7 +7,7 @@ import { API } from "../../..";
 const axios = require("axios");
 
 export function EndGameReact() {
-  const [msg, setMsg] = useState("Connecting to Database");
+  const [msg, setMsg] = useState("Connecting");
   const name = useSelector((state) => state.chess.name);
   const turn = useSelector((state) => state.chess.turn);
   const color = useSelector((state) => state.chess.playerColor);
@@ -33,10 +33,10 @@ export function EndGameReact() {
       win: turn === 'white'? 'black' : 'white',
       movs: movs,
     };
-    if(payload.movs.length < 5){setMsg("Game too short")}else{
+    if(payload.movs.length < 10){setMsg("Game too short")}else{
     axios.post(`${API}/game`, payload).then(
       ()=>{
-        setMsg("Game saved in Database")
+        setMsg("Game saved")
     }
     );}
   };
@@ -44,7 +44,7 @@ export function EndGameReact() {
   return (
     <div className="ER">
     <div style = {{height:"30%", textAlign:"center"}}>
-      <h3 style = {{marginTop:"40px"}}> {`${turn === "white" ? "Black" : "White"} wins`}</h3>
+      <h3 > {`${turn === "white" ? "Black" : "White"} wins`}</h3>
       <p> {msg} </p>
       </div>
       <div className = "inGameMovs">

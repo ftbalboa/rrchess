@@ -71,3 +71,10 @@
 .cardImg{
     width: 50px;
 }
+
+@media (max-width: 800px) {
+    .gameCard{
+        width: 300px;
+        font-size: 10px;
+    }
+}

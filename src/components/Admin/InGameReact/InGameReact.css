@@ -13,6 +13,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
   width: 40%;
   border-radius: 5%;
   color: white;
@@ -23,7 +24,7 @@
 
 .inGameMovs {
   width: 80%;
-  min-height: 100px;
+  min-height: 200px;
 }
 
 .inGameTitle {
@@ -42,7 +43,7 @@
     margin-bottom: 20px;
   }
   .inGameTitle {
-    margin-top: 40px;
+    margin-top: 30px;
     text-shadow: 1px 1px 10px YellowGreen;
     font-size: 12px;
   }

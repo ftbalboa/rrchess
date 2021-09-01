@@ -11,9 +11,7 @@ export function InGameReact() {
 
   return (
     <div className="IR">
-      <div style = {{height:"30%"}}>
-        <h5 className="inGameTitle">{`${playerName} vs Computer`}</h5>
-      </div>
+        <div className="inGameTitle">{`${playerName} vs Computer`}</div>
       <div className="inGameMovs">
         <ShowMovs needReset={true} />
       </div>
