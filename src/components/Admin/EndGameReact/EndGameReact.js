@@ -14,6 +14,7 @@ export function EndGameReact() {
   const dif = useSelector((state) => state.chess.dif);
   const movs = useSelector((state) => state.chess.moves);
   const wait = useSelector((state) => state.chess.wait);
+  const status = useSelector((state) => state.chess.status);
 
   const dispatch = useDispatch();
   const handleClick = () => {
@@ -21,36 +22,44 @@ export function EndGameReact() {
   };
 
   useEffect(() => {
-    if(!wait)loadData();
+    if (!wait) loadData();
   }, [wait]);
 
   const loadData = () => {
     let payload = {
       playerName: name,
       playerColor: color,
-      date: (new Date()).toLocaleString("en-US"),
+      date: new Date().toLocaleString("en-US"),
       dif: dif,
-      win: turn === 'white'? 'black' : 'white',
+      win: turn === "white" ? "black" : "white",
       movs: movs,
     };
-    if(payload.movs.length < 10){setMsg("Game too short")}else{
-    axios.post(`${API}/game`, payload).then(
-      ()=>{
-        setMsg("Game saved")
+    if (payload.movs.length < 10) {
+      setMsg("Game too short");
+    } else {
+      if (status !== "saved") {
+        axios.post(`${API}/game`, payload).then(() => {
+          setMsg("Game saved");
+          dispatch(setStatus("saved"));
+        });
+      } else {
+        setMsg("Game saved");
+      }
     }
-    );}
   };
 
   return (
     <div className="ER">
-    <div style = {{height:"30%", textAlign:"center"}}>
-      <h3 > {`${turn === "white" ? "Black" : "White"} wins`}</h3>
-      <p> {msg} </p>
+      <div className="endgameTitle" >
+        <h3> {`${turn === "white" ? "Black" : "White"} wins`}</h3>
+        <p> {msg} </p>
       </div>
-      <div className = "inGameMovs">
-      <ShowMovs />
+      <div className="inGameMovs">
+        <ShowMovs />
       </div>
-      <button className="mainButton"  onClick={handleClick}>Rematch</button>
+      <button className="mainButton" onClick={handleClick}>
+        Rematch
+      </button>
     </div>
   );
 }

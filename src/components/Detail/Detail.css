@@ -20,6 +20,7 @@
     box-shadow: 5px 5px 20px black;
     text-shadow: 1px 1px 1px black ;
     padding-bottom: 5%;
+    margin-top: 40px;
 }
 
 .namesDetailContainer{
@@ -44,5 +45,6 @@
 @media (max-width: 800px) {
     .detailGame{
         width:90%;
+        margin-top: 20px;
     }
 }

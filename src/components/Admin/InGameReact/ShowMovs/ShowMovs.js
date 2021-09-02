@@ -4,12 +4,8 @@ import { resetMoves } from "../../../../redux/actions/gameActions";
 import styles from "./ShowMovs.css";
 import { Mov } from "./Mov/Mov";
 
-export function ShowMovs({needReset}) {
+export function ShowMovs({db}) {
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    needReset && dispatch(resetMoves());
-  }, []);
 
   const ajustArray = (a) => {
     let fr = [];
@@ -20,13 +16,15 @@ export function ShowMovs({needReset}) {
     return fr
   };
 
+  const arrMovsDb = useSelector((state) => ajustArray(state.chess.movesDb));
   const arrMovs = useSelector((state) => ajustArray(state.chess.moves));
+  const show = db? arrMovsDb : arrMovs;
 
   return (
     <div>
       <p> Movs </p>
       <div className="movs">
-        {arrMovs.map((mov, index) => (
+        {show.map((mov, index) => (
           <Mov movs={mov} key={index} index={index+1} />
         ))}
       </div>

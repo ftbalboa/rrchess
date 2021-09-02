@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { API } from "../..";
-import { setMoves } from "../../redux/actions/gameActions";
+import { setMoves, setMovesDb } from "../../redux/actions/gameActions";
 import { ShowMovs } from "../Admin/InGameReact/ShowMovs/ShowMovs";
 import styles from "./Detail.css";
 const axios = require("axios");
@@ -19,7 +19,7 @@ export function Detail({ gameId }) {
     });
   },[])
   useEffect(()=>{
-    if(gameData) dispatch(setMoves([...gameData.movs]))
+    if(gameData) dispatch(setMovesDb([...gameData.movs]))
   },[gameData])
   return (
     
@@ -55,7 +55,7 @@ export function Detail({ gameId }) {
           </div>
         </div>
         <div className="inGameMovs">
-        <ShowMovs />
+        <ShowMovs db={true} />
         </div>
         <div className="detailTitle">
         {`${gameData.playerColor === gameData.win? gameData.playerName : 'Computer'} won`}

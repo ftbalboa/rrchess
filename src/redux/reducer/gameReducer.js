@@ -11,12 +11,14 @@ import {
   SET_GAMES_LIST,
   SET_MOVES,
   SET_WAIT,
+  SET_MOVES_DB,
 } from "../constants";
 
 const initialState = {
   playerColor: "white",
-  status: "pause", //{'pause','play', 'mated'}
+  status: "pause", //{'pause','play', 'mated', 'saved'}
   moves: [],
+  movesDb: [],
   turn: "white",
   name: "",
   dif: 1,
@@ -150,6 +152,9 @@ export const gameReducer = (state = initialState, action) => {
 
     case SET_MOVES:
       return { ...state, moves: [...action.payload] };
+
+    case SET_MOVES_DB:
+      return { ...state, movesDb: [...action.payload] };
 
     case SET_WAIT:
       return { ...state, wait: action.payload };

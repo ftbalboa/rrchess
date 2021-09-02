@@ -59,26 +59,27 @@ export function PieceReact({ piece, clickSel, clickThr, posFun }) {
   };
 
   return (
-    <div style={{...style}}>
+    <div style={{...style}} onClick={() =>{
+      if (piece.if_threat) handleClickThr()
+      else handleClickSel()}}>
       <div className="pieceContainer">
         <img
           alt="piece"
           className="piece"
           src={img}
-          onClick={() =>   {handleClickSel()}}
         ></img>
         {piece.if_select ? (
           <img
             src={imgDicc.Select}
+            alt="select"
             className="select"
-            onClick={() => handleClickSel()}
           ></img>
         ) : null}
         {piece.if_threat ? (
           <img
             src={imgDicc.Threat}
+            alt="threat"
             className="select"
-            onClick={() => handleClickThr()}
           ></img>
         ) : null}
       </div>

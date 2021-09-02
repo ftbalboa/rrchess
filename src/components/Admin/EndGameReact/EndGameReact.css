@@ -1,23 +1,38 @@
-.ER{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width:40%;
-    border-radius: 5%;
-    color: white;
-    text-shadow: 1px 1px 3px black ;
-    background-color: YellowGreen;
-    box-shadow: 0px 5px 40px black;
-    line-height : 30px;
+.ER {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 40%;
+  border-radius: 5%;
+  color: white;
+  text-shadow: 1px 1px 3px black;
+  background-color: YellowGreen;
+  box-shadow: 0px 5px 40px black;
+  line-height: 30px;
+}
+
+.endgameTitle {
+  height: 30%;
+  text-align: center;
 }
 
 @media (max-width: 800px) {
-    .ER {
-        display: flex;
-        flex-direction: column;
-        width: 340px;
-        height: 320px;
-        margin-top: 20px;
-        margin-bottom: 20px;
-    }
+  .ER {
+    display: flex;
+    flex-direction: column;
+    width: 340px;
+    height: 320px;
+    margin-top: 20px;
+    margin-bottom: 20px;
   }
+}
+
+@media (min-width: 1500px) {
+  .ER {
+    justify-content: space-between;
+  }
+  .endgameTitle{
+      height: 15%;
+      margin-top: 40px;
+  }
+}

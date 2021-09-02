@@ -8,12 +8,12 @@ import axios from "axios";
 export function InGameReact() {
   const dispatch = useDispatch();
   const playerName = useSelector((state) => state.chess.name);
-
+  
   return (
     <div className="IR">
         <div className="inGameTitle">{`${playerName} vs Computer`}</div>
       <div className="inGameMovs">
-        <ShowMovs needReset={true} />
+        <ShowMovs />
       </div>
       <button
         className={"mainButton"}

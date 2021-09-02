@@ -7,6 +7,7 @@ import {
   setName,
   setDif,
   setTurn,
+  resetMoves,
 } from "../../../redux/actions/gameActions";
 import styles from "./OptionsReact.css";
 const axios = require("axios");
@@ -22,6 +23,7 @@ export function OptionsReact() {
   });
 
   useEffect(() => {
+    dispatch(resetMoves())
     axios({
       method: "GET",
       url: `${API}/winrate`,
