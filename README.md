@@ -18,11 +18,11 @@ https://rrchess-rrchess.vercel.app/
 
 ## Capturas:
 ###
-![ejemplo](/imgRm/one.png)
+![ejemplo](/imgRm/one.PNG)
 ###
-![ejemplo](/imgRm/two.png)
+![ejemplo](/imgRm/two.PNG)
 ###
-![ejemplo](/imgRm/third.png)
+![ejemplo](/imgRm/third.PNG)
 
 ## Todo:
 - Corregir pequeños bugs asociados a la captura "al paso"
