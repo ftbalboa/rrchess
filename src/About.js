@@ -1,6 +1,5 @@
 import React from "react";
 import "./About.css";
-import { Admin } from "./components/Admin/Admin";
 
 function About() {
   return (
@@ -26,8 +25,7 @@ function About() {
           </li>
         </ul>
         <h4 className="licenseTitle">Made by</h4>
-        Francisco Balboa, FullStack and IOT developer, Electronics technician
-        and Escape Rooms producer
+        Francisco Balboa, FullStack and IOT developer.
         <h4 className="licenseTitle">Contact</h4>
         <div className="contactList">
           <a href="https://www.linkedin.com/in/ftbr/" className="contactItem">Linkedin</a>

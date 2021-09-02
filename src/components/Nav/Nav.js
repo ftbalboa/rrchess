@@ -10,12 +10,14 @@ export function Nav() {
       <NavLink exact to="/" className="navTitle">
         Another pixel chess :)
       </NavLink>
+      <div className="navItems">
       <NavLink to="/database" className="navItem" activeClassName="active">
         Database
       </NavLink>
       <NavLink to="/about" className="navItem" activeClassName="active">
         About
       </NavLink>
+      </div>
     </div>
   );
 }

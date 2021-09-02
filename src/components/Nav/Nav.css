@@ -1,40 +1,74 @@
-.Nav{
-    background-color: Grey;
-    height: 6vh;
-    padding-top: 0.75em;
-    color: white;
-    padding-left: 0.5em;
-    text-decoration: none !important;
-    display: flex;
-    align-items: center;
-    box-shadow: 0px 0px 10px black;
-    text-shadow: 1px 1px 4px black ;
+.Nav {
+  background-color: Grey;
+  height: 8vh;
+  padding-top: 0.75em;
+  color: white;
+  text-decoration: none !important;
+  display: flex;
+  align-items: center;
+  box-shadow: 0px 0px 10px black;
+  text-shadow: 1px 1px 4px black;
 }
 
-.navTitle{
-    font-size: 1.2em;
-    color:white;
-    text-decoration: none;
-    margin:1em;
-    padding-bottom: 0.5em;
-    animation: glow 2.5s infinite alternate;
+@media (max-width: 800px) {
+  .Nav {
+    height: 20vh;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    padding-left: 0;
+    margin-bottom: 60px;
+  }
+  .navItems {
+    width: 100%;
+    align-items: center;
+    min-width: 200px;
+  }
+  .navItem{
+      display: flex;
+      justify-content: center;
+  }
+  .navTitle {
+    width: 100%;
+    text-align: center;
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+}
+
+.navTitle {
+  font-size: 3vh;
+  color: white;
+  text-decoration: none;
+  animation: glow 2.5s infinite alternate;
+  margin-left: 30px;
+  line-height : 30px;
+  margin-right: 30px;
+  width: 100%;
+}
+
+.navItems {
+  width: 80%;
+  display: flex;
+  justify-content: space-between;
 }
 
 @keyframes glow {
-    to {
-        text-shadow: 1px 1px 10px YellowGreen;
-    }
+  to {
+    text-shadow: 1px 1px 10px YellowGreen;
+  }
 }
 
-.navItem{
-    color:white;
-    margin-left: auto;
-    padding-right: 5em;
-    font-size: 0.9em;
-    text-decoration: none;
-    padding-bottom: 0.5em;
+.navItem {
+  color: white;
+  margin-left: auto;
+  width: 50%;
+  font-size: 0.9em;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
 }
 
-.navItem:hover{
-    text-shadow: 1px 1px 1px YellowGreen;
+.navItem:hover {
+  text-shadow: 1px 1px 1px YellowGreen;
 }

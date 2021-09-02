@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setMoves } from "../../redux/actions/gameActions";
+import { API } from "../..";
+import { setMoves, setMovesDb } from "../../redux/actions/gameActions";
 import { ShowMovs } from "../Admin/InGameReact/ShowMovs/ShowMovs";
 import styles from "./Detail.css";
 const axios = require("axios");
@@ -11,14 +12,14 @@ export function Detail({ gameId }) {
   useEffect(()=>{
     axios({
       method: "GET",
-      url: `http://localhost:3001/game`,
+      url: `${API}/game`,
       params: { idGame: gameId},
     }).then((res) => {
       setGameData(res.data);
     });
   },[])
   useEffect(()=>{
-    if(gameData) dispatch(setMoves([...gameData.movs]))
+    if(gameData) dispatch(setMovesDb([...gameData.movs]))
   },[gameData])
   return (
     
@@ -54,7 +55,7 @@ export function Detail({ gameId }) {
           </div>
         </div>
         <div className="inGameMovs">
-        <ShowMovs />
+        <ShowMovs db={true} />
         </div>
         <div className="detailTitle">
         {`${gameData.playerColor === gameData.win? gameData.playerName : 'Computer'} won`}

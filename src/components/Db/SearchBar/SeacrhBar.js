@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styles from "./SearchBar.css";
 import { setGameList } from "../../../redux/actions/gameActions";
 import { useDispatch } from "react-redux";
+import { API } from "../../..";
 const axios = require("axios");
 
 export function SearchBar({ buttonName, query, path }) {
@@ -19,7 +20,7 @@ export function SearchBar({ buttonName, query, path }) {
       : `/${capitalizeFirstLetter(search)}`;
     axios({
       method: "get",
-      url: `http://localhost:3001/${path}${aux}`,
+      url: `${API}/${path}${aux}`,
     }).then(function (response) {
       if (typeof response.data === "string") dispatch(setGameList([]));
       else dispatch(setGameList(response.data));

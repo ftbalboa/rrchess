@@ -15,6 +15,7 @@ body {
   height: 100vh;
   background-image: url("/src/assets/backgrounds/t2.png");
   background-color: white;
+  min-width: 360px;
 }
 
 a {

@@ -1,27 +1,50 @@
-.mainButton{
-    background-color: transparent;
-    color:white;
-    text-shadow: 0.5px 0.5px 1px black;
-    height: 30px;
-    padding-left: 10px;
-    padding-right: 10px;
-    cursor: pointer;
-    margin-bottom: 50px;
+.mainButton {
+  background-color: transparent;
+  color: white;
+  text-shadow: 0.5px 0.5px 1px black;
+  height: 30px;
+  padding-left: 10px;
+  padding-right: 10px;
+  cursor: pointer;
+  margin-bottom: 50px;
 }
 
-.IR{
+.IR {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 40%;
+  border-radius: 5%;
+  color: white;
+  text-shadow: 1px 1px 3px black;
+  background-color: Grey;
+  box-shadow: 0px 5px 40px black;
+}
+
+.inGameMovs {
+  width: 80%;
+  min-height: 200px;
+}
+
+.inGameTitle {
+  margin-top: 40px;
+  text-shadow: 1px 1px 10px YellowGreen;
+  font-size: 17px;
+}
+
+@media (max-width: 800px) {
+  .IR {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    width:40%;
-    border-radius: 5%;
-    color: white;
-    text-shadow: 1px 1px 3px black ;
-    background-color: Grey;
-    box-shadow: 0px 5px 40px black;
-}
-
-.inGameMovs{
-    width: 80%;
-    height: 300px;
+    width: 340px;
+    height: 320px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  .inGameTitle {
+    margin-top: 30px;
+    text-shadow: 1px 1px 10px YellowGreen;
+    font-size: 12px;
+  }
 }

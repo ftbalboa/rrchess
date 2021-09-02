@@ -1,4 +1,4 @@
-import { SET_STATUS, SET_COLOR, ADD_MOVE, SET_MODE, SET_TURN, RESET_MOVES, SET_NAME, SET_DIF, SET_ID, SET_GAMES_LIST, SET_MOVES, SET_WAIT } from "../constants";
+import { SET_STATUS, SET_COLOR, ADD_MOVE, SET_MODE, SET_TURN, RESET_MOVES, SET_NAME, SET_DIF, SET_ID, SET_GAMES_LIST, SET_MOVES, SET_WAIT, SET_MOVES_DB } from "../constants";
 
 export function setTurn(status) {
   return {
@@ -78,6 +78,13 @@ export function addMove(movType, pieceName = "", initPos = [], pos = [], ambPos 
 export function setMoves(moves) {
   return {
     type: SET_MOVES,
+    payload: moves,
+  };
+}
+
+export function setMovesDb(moves) {
+  return {
+    type: SET_MOVES_DB,
     payload: moves,
   };
 }

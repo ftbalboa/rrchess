@@ -26,9 +26,6 @@
     box-shadow: 1px 1px 10px white;
 }
 
-.pageNumber{
-}
-
 .pageItem{
     cursor:pointer;
 }
@@ -41,3 +38,9 @@
     cursor:pointer;
     visibility: hidden;
 }
+
+@media (max-width: 800px) {
+    .Db {
+        width: 100%;
+    }
+  }

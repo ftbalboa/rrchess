@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { API } from "../../..";
 import {
   setColor,
   setStatus,
   setName,
   setDif,
   setTurn,
+  resetMoves,
 } from "../../../redux/actions/gameActions";
 import styles from "./OptionsReact.css";
 const axios = require("axios");
@@ -21,9 +23,10 @@ export function OptionsReact() {
   });
 
   useEffect(() => {
+    dispatch(resetMoves())
     axios({
       method: "GET",
-      url: `http://localhost:3001/winrate`,
+      url: `${API}/winrate`,
     }).then((res) => {
       setWinrate(res.data);
     });

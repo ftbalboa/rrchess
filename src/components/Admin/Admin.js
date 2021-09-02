@@ -16,13 +16,17 @@ export function Admin() {
         return <InGameReact />;
       case "mated":
         return <EndGameReact />;
+      case "saved":
+        return <EndGameReact />;
+      default:
+        return <OptionsReact />;
     }
   };
 
   return (
     <div className="Admin">
       <div className="adminBoard">
-        <BoardReact  />
+        <BoardReact />
         {optionsOrGame()}
       </div>
     </div>

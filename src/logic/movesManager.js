@@ -1,6 +1,6 @@
 const PLAY = "play";
 const CHECKMATE = "checkmate";
-const TABLES = "tables";
+const TABLES = "tables"; // ver is checkmate
 
 class MovesManager {
   constructor(board) {
@@ -387,7 +387,7 @@ class MovesManager {
       }
     }
     if (this.isCheckNow(color)) return CHECKMATE;
-    else return TABLES;
+    else return CHECKMATE; // aca deberia retornar TABLES
   }
 }
 

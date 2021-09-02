@@ -10,6 +10,8 @@ import { store } from "./redux/store/store";
 import { Provider } from "react-redux";
 import { Route, BrowserRouter as Router } from "react-router-dom";
 
+export const API = "https://anotherpixelchess.herokuapp.com";
+
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
