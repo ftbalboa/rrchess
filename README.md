@@ -12,15 +12,23 @@ La dificultad se maneja añadiendo en los niveles bajos una pequeña chance de q
 
 Stockfish se implementa en front utilizando Worker.
 
-### Video de ejemplo:
+## Link de prueba
 
-![ejemplo](/imgRm/ej.gif)
+https://rrchess-rrchess.vercel.app/
 
+## Capturas:
+###
+![ejemplo](/imgRm/one.png)
+###
+![ejemplo](/imgRm/two.png)
+###
+![ejemplo](/imgRm/third.png)
 
 ## Todo:
-- Corregir pequeños bugfix asociados al juego rápido (originados por asincronismos)
+- Corregir pequeños bugs asociados a la captura "al paso"
 - Embellecer estilos
-- Detalle de los juegos traídos de la DB
+- Mejorar responsive
+- Adherir estado "Tablas"
 
 ## Backend
 El back de este proyecto se encuentra en: https://github.com/ftbalboa/rrchessApi
