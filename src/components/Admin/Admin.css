@@ -4,6 +4,7 @@
     justify-content: space-around;
     width: 98.5%;
     height: 100%;
+    margin-bottom: 40px;
 }
 
 @media (max-width: 800px) {
